@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.domain.User;
+import com.example.form.LoginUserForm;
+import com.example.form.RegisterUserForm;
 import com.example.repository.UserRepository;
 
 /**
@@ -36,8 +38,19 @@ public class RegisterUserService {
 	 * @param email メールアドレス
 	 * @return userオブジェクト
 	 */
-	public User findByEmail(String email) {
-		return userRepository.findByEmail(email);
+	public User findByEmail(RegisterUserForm form) {
+		return userRepository.findByEmail(form.getEmail());
+	}
+	
+	
+	/**
+	 * user情報を取得します.
+	 * 
+	 * @param form リクエストパラメータ
+	 * @return userオブジェクト
+	 */
+	public User findByEmailAndPassword(LoginUserForm form) {
+		return userRepository.findByEmailAndPassword(form.getEmail(), form.getPassword());
 	}
 
 }

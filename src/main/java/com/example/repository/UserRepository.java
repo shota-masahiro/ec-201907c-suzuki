@@ -74,4 +74,25 @@ public class UserRepository {
 		}
 	}
 
+
+	/**
+	 * user情報を取得します.
+	 * 
+	 * @param email メールアドレス
+	 * @param password パスワード
+	 * @return
+	 */
+	public User findByEmailAndPassword(String email, String password) {
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT id, name, email, password, zipcode, address, telephone ");
+		sql.append("FROM users WHERE email=:email AND password=:password;");
+		SqlParameterSource param = new MapSqlParameterSource().addValue("email", email).addValue("password", password);
+		List<User> userList = template.query(sql.toString(), param, USER_ROW_MAPPER);
+		if (userList.size() != 0) {
+			return userList.get(0);
+		} else {
+			return null;
+		}
+	}
+
 }
