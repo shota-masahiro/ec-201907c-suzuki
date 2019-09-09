@@ -15,7 +15,7 @@ import com.example.form.LoginUserForm;
 import com.example.service.RegisterUserService;
 
 /**
- * ログイン画面を操作するコントローラ.
+ * ログイン画面を表示するコントローラ.
  * 
  * @author shota.suzuki
  *

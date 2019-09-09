@@ -14,7 +14,7 @@ import com.example.form.RegisterUserForm;
 import com.example.service.RegisterUserService;
 
 /**
- * ユーザ情報を操作するコントローラ.
+ * ユーザ登録画面を表示するコントローラ.
  * 
  * @author shota.suzuki
  *
