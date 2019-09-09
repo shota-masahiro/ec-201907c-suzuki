@@ -75,7 +75,7 @@ public class RegisterUserController {
 		BeanUtils.copyProperties(form, user);
 
 		registerUserService.insert(user);
-		return "login";
+		return "redirect:/loginUser";
 	}
 
 }

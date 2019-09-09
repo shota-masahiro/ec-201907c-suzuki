@@ -79,5 +79,17 @@ public class LoginUserController {
 
 		return "test";
 	}
+	
+	
+	/**
+	 * ログアウト処理をします.
+	 * 
+	 * @return ログイン画面
+	 */
+	@RequestMapping("/logout")
+	public String logout() {
+		session.removeAttribute("user");
+		return "login";
+	}
 
 }
