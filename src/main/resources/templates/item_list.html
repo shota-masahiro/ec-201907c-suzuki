@@ -79,10 +79,10 @@
 						<tr th:each="item:${itemAllList}">
 
 							<th th:each="i:${item}">
-								<a href="item_detail.html">
+								<a th:href="@{'/detail/showDetail?id=' + ${i.id}}">
 									<img th:src="@{'/img/' + ${i.imagePath}}" class="img-responsive img-rounded" width="200" height="600">
 								</a><br>
-								<a href="item_detail.html">
+								<a th:href="@{'/detail/showDetail?id=' + ${i.id}}">
 									<span th:text="${i.name}">商品名</span>
 								</a><br>
 								<span class="price">&nbsp;М&nbsp;</span>&nbsp;&nbsp;
