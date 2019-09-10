@@ -33,9 +33,9 @@ public class ShowItemListController {
 	 * @return 商品一覧画面
 	 */
 	@RequestMapping("")
-	public String index(Model model) {
+	public String index(String searchName, Model model) {
 		
-		List<Item> itemList = showItemListService.findAll();
+		List<Item> itemList = showItemListService.findAll(searchName);
 		List<List<Item>> itemAllList = showItemListService.createItemList(itemList);
 		model.addAttribute("itemAllList", itemAllList);
 

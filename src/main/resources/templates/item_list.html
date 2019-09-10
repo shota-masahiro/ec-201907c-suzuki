@@ -54,11 +54,11 @@
 					</div>
 					
 					<div class="panel-body">
-						<form method="post" action="#" class="form-horizontal">
+						<form method="post" th:action="@{/itemList}" class="form-horizontal">
 							<div class="form-group">
 								<label for="code" class="control-label col-sm-2">商品名</label>
 								<div class="col-sm-9">
-									<input type="text" name="code" id="code" class="form-control input-sm"/>
+									<input type="text" name="searchName" id="code" class="form-control input-sm"/>
 								</div>
 							</div>
 							<div class="text-center">

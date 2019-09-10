@@ -55,6 +55,22 @@ public class ItemRepository {
 
 
 	/**
+	 * 商品情報一覧を取得します.
+	 * 
+	 * @param searchName 検索単語
+	 * @return 商品情報一覧
+	 */
+	public List<Item> findBySearchName(String searchName) {
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT id, name, description, price_m, price_l, image_path, deleted ");
+		sql.append("FROM items WHERE name LIKE :name ORDER BY id;");
+		SqlParameterSource param = new MapSqlParameterSource().addValue("name", searchName);
+		List<Item> itemList = template.query(sql.toString(), param, ITEM_ROW_MAPPER);
+		return itemList;
+	}
+
+
+	/**
 	 * 商品詳細情報を取得します.
 	 * 
 	 * @param id 商品ID

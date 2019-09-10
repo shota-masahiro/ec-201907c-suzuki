@@ -32,12 +32,20 @@ public class ShowItemListService {
 	 * 
 	 * @return 商品一覧情報
 	 */
-	public List<Item> findAll() {
-		List<Item> itemList = itemRepository.findAll();
+	public List<Item> findAll(String searchName) {
+
+		List<Item> itemList;
+
+		if (searchName == null || "".equals(searchName)) {
+			itemList = itemRepository.findAll();
+		} else {
+			itemList = itemRepository.findBySearchName("%" + searchName + "%");
+		}
+
 		return itemList;
 	}
-	
-	
+
+
 	/**
 	 * itemListに入れ替えるメソッド.
 	 * 
