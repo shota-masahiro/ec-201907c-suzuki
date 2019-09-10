@@ -57,7 +57,7 @@ public class ExecuteShoppingCartService {
 			orderItem = createOrderItem(form, checkOrder.getId());
 		}
 		Integer orderItemId = orderItemRepository.insert(orderItem);
-		
+
 		OrderTopping orderTopping = null;
 		if (form.getToppingIdList() == null) {
 			form.setToppingIdList(new ArrayList<Integer>());
@@ -89,5 +89,43 @@ public class ExecuteShoppingCartService {
 		return orderItem;
 	}
 
+
+	/**
+	 * 注文情報を取得します.
+	 * 
+	 * @param orderId 注文ID
+	 * @return Orderオブジェクト
+	 */
+	public Order findByOrderId(Integer orderId) {
+		return orderRepository.findByOrderId(orderId);
+	}
+	
+	
+	public void delete(Integer orderItemId) {
+		orderToppingRepository.delete(orderItemId);
+		orderItemRepository.delete(orderItemId);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }

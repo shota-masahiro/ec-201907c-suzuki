@@ -29,6 +29,24 @@ public class ExecuteShoppingCartController {
 		return new ExecuteShoppingCartForm();
 	}
 
+
+	/**
+	 * ショッピングカート画面を出力します.
+	 * 
+	 * @param orderId 注文ID
+	 * @param model   リクエストスコープ
+	 * @return        ショッピングカート画面
+	 */
+	public String index(Integer orderId, Model model) {
+		if (orderId == null || orderId == 0) {
+			return "cart_list";
+		}
+		Order order = executeShoppingCartService.findByOrderId(orderId);
+		model.addAttribute("order", order);
+		return "cart_list";
+	}
+
+
 	/**
 	 * ショッピングカートに商品を入れる追加する処理
 	 * 
@@ -45,6 +63,21 @@ public class ExecuteShoppingCartController {
 		System.out.println(order);
 
 		return "cart_list";
+	}
+
+
+	/**
+	 * 削除処理をします.
+	 * 
+	 * @param orderId     注文ID
+	 * @param orderItemId 注文商品ID
+	 * @param model       リクエストパラメータ
+	 * @return            ショッピングカート画面
+	 */
+	@RequestMapping("/delete")
+	public String delete(String orderId, String orderItemId, Model model) {
+		executeShoppingCartService.delete(Integer.parseInt(orderItemId));
+		return index(Integer.parseInt(orderId), model);
 	}
 
 }

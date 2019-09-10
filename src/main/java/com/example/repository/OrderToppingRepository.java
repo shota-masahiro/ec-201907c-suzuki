@@ -3,6 +3,7 @@ package com.example.repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
@@ -47,5 +48,17 @@ public class OrderToppingRepository {
 		template.update(sql.toString(), param);
 	}
 
+
+	/**
+	 * 削除処理をします.
+	 * 
+	 * @param orderItemId 注文商品ID
+	 */
+	public void delete(Integer orderItemId) {
+		StringBuilder sql = new StringBuilder();
+		sql.append("DELETE FROM order_toppings WHERE order_item_id=:orderItemId");
+		SqlParameterSource param = new MapSqlParameterSource().addValue("orderItemId", orderItemId);
+		template.update(sql.toString(), param);
+	}
 
 }
