@@ -21,9 +21,11 @@ import com.example.service.ShowItemListService;
 @Controller
 @RequestMapping("/itemList")
 public class ShowItemListController {
-	
+
 	@Autowired
 	private ShowItemListService showItemListService;
+
+	private static final int VIEW_SIZE = 9;
 
 	/**
 	 * 商品一覧画面を出力します.
@@ -31,14 +33,18 @@ public class ShowItemListController {
 	 * @return 商品一覧画面
 	 */
 	@RequestMapping("")
-	public String index() {
-		showItemListService.findAll().forEach(System.out::println);
+	public String index(Model model) {
+		
+		List<Item> itemList = showItemListService.findAll();
+		List<List<Item>> itemAllList = showItemListService.createItemList(itemList);
+		model.addAttribute("itemAllList", itemAllList);
+
 		return "item_list";
 	}
-	
-	
+
+
 	/**
-	 * ページングのリンクを作成するメソッド
+	 * ページングのリンクを作成するメソッド.
 	 * 
 	 * @param model リクエストスコープ
 	 * @param itemPage ページング情報
@@ -55,14 +61,5 @@ public class ShowItemListController {
 		}
 		return pageNumbers;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 }
