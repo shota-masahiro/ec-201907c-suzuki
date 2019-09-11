@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.domain.Item;
+import com.example.form.ShowItemListForm;
 import com.example.repository.ItemRepository;
 
 /**
@@ -33,16 +34,24 @@ public class ShowItemListService {
 	 * @return 商品一覧情報
 	 */
 	public List<Item> findAll(String searchName) {
-
 		List<Item> itemList;
-
 		if (searchName == null || "".equals(searchName)) {
 			itemList = itemRepository.findAll();
 		} else {
 			itemList = itemRepository.findBySearchName("%" + searchName + "%");
 		}
-
 		return itemList;
+	}
+	
+	
+	/**
+	 * 商品情報一覧を取得します.
+	 * 
+	 * @param form リクエストパラメータ
+	 * @return     商品情報一覧
+	 */
+	public List<Item> findByPrice(ShowItemListForm form) {
+		return itemRepository.findByPrice(form.getElement(), form.getOrder());
 	}
 
 

@@ -85,6 +85,21 @@ $(function(){
 						</form>
 					</div>
 				</div>
+				
+				<form th:action="@{/itemList}" th:object="${showItemListForm}" method="post">
+					<div>
+						<select id="sort_select" name="element">
+							<option th:each="size:${selectSizeMap}" th:text="${size.value}" th:value="${size.key}"></option>
+						</select>
+					</div>
+					<div>
+						<select id="sort_price" name="order">
+							<option th:each="sort:${sortPriceMap}" th:text="${sort.value}" th:value="${sort.key}"></option>
+						</select>
+					</div>
+					<button>並び替えをする</button>
+				</form>
+				<br>
 			</div>
 		</div>
 
@@ -113,7 +128,7 @@ $(function(){
 
 					</tbody>
 				</table>
-				
+
 				<!-- ページング機能 -->
 
 			</div>

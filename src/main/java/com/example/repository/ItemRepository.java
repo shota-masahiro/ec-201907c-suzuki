@@ -90,7 +90,22 @@ public class ItemRepository {
 	}
 
 
-
+	/**
+	 * 商品情報一覧を取得します.
+	 * 
+	 * @param size  ピザのサイズ
+	 * @param price 料金の高低
+	 * @return      商品情報一覧
+	 */
+	public List<Item> findByPrice(String size, String price) {
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT id, name, description, price_m, price_l, image_path, deleted ");
+		sql.append("FROM items ORDER BY ");
+		sql.append(" "+ size +" ");
+		sql.append(" "+ price +" ");
+		List<Item> itemList = template.query(sql.toString(), ITEM_ROW_MAPPER);
+		return itemList;
+	}
 
 
 
