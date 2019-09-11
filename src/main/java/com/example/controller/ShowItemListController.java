@@ -46,7 +46,7 @@ public class ShowItemListController {
 	/**
 	 * ページングのリンクを作成するメソッド.
 	 * 
-	 * @param model リクエストスコープ
+	 * @param model    リクエストスコープ
 	 * @param itemPage ページング情報
 	 * @return
 	 */

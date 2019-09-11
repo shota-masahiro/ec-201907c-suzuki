@@ -47,10 +47,10 @@ public class RegisterUserController {
 	/**
 	 * user情報を挿入します.
 	 * 
-	 * @param form リクエストパラメータ
+	 * @param form   リクエストパラメータ
 	 * @param result 入力チェック
-	 * @param model リクエストパラメータ
-	 * @return ログイン画面
+	 * @param model  リクエストパラメータ
+	 * @return       ログイン画面
 	 */
 	@RequestMapping("/registerUser")
 	public String register(

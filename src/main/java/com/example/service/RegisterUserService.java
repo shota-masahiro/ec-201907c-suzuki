@@ -35,8 +35,19 @@ public class RegisterUserService {
 	/**
 	 * user情報を取得します.
 	 * 
+	 * @param id ユーザID
+	 * @return   userオブジェクト
+	 */
+	public User load(Integer id) {
+		return userRepository.load(id);
+	}
+	
+	
+	/**
+	 * user情報を取得します.
+	 * 
 	 * @param email メールアドレス
-	 * @return userオブジェクト
+	 * @return      userオブジェクト
 	 */
 	public User findByEmail(RegisterUserForm form) {
 		return userRepository.findByEmail(form.getEmail());
@@ -47,7 +58,7 @@ public class RegisterUserService {
 	 * user情報を取得します.
 	 * 
 	 * @param form リクエストパラメータ
-	 * @return userオブジェクト
+	 * @return     userオブジェクト
 	 */
 	public User findByEmailAndPassword(LoginUserForm form) {
 		return userRepository.findByEmailAndPassword(form.getEmail(), form.getPassword());

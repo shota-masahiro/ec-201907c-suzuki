@@ -160,7 +160,7 @@ public class OrderRepository {
 	 * 
 	 * @param userId ユーザID
 	 * @param status 注文状態
-	 * @return 注文情報
+	 * @return       注文情報
 	 */
 	public Order findByUserIdAndStatus(Integer userId, Integer status) {
 		StringBuilder sql = new StringBuilder();
@@ -180,7 +180,7 @@ public class OrderRepository {
 	 * 注文情報を取得します.
 	 * 
 	 * @param id 注文ID
-	 * @return 注文情報
+	 * @return   注文情報
 	 */
 	public Order findByOrderId(Integer id) {
 		StringBuilder sql = new StringBuilder();
@@ -204,7 +204,7 @@ public class OrderRepository {
 	 * 挿入処理をします.
 	 * 
 	 * @param order orderオブジェクト
-	 * @return 注文ID
+	 * @return      注文ID
 	 */
 	public Integer insert(Order order) {
 		StringBuilder sql = new StringBuilder();
@@ -213,6 +213,21 @@ public class OrderRepository {
 		SqlParameterSource param = new BeanPropertySqlParameterSource(order);
 		Number key = insert.executeAndReturnKey(param);
 		return key.intValue();
+	}
+	
+	
+	/**
+	 * 更新処理をします.
+	 * 
+	 * @param order orderオブジェクト
+	 */
+	public void update(Order order) {
+		StringBuilder sql = new StringBuilder();
+		sql.append("UPDATE orders ");
+		sql.append("SET status=:status, order_date=:orderDate, total_price=:totalPrice, destination_name=:destinationName, destination_email=:destinationEmail, destination_zipcode=:destinationZipcode, destination_address=:destinationAddress, destination_tel=:destinationTel, delivery_time=:deliveryTime, payment_method=:paymentMethod ");
+		sql.append("WHERE id=:id;");
+		SqlParameterSource param = new BeanPropertySqlParameterSource(order);
+		template.update(sql.toString(), param);
 	}
 
 }

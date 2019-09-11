@@ -53,13 +53,33 @@ public class UserRepository {
 		SqlParameterSource param = new BeanPropertySqlParameterSource(user);
 		template.update(sql.toString(), param);
 	}
+	
+	
+	/**
+	 * user情報を取得します.
+	 * 
+	 * @param id ユーザID
+	 * @return   userオブジェクト
+	 */
+	public User load(Integer id) {
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT id, name, email, password, zipcode, address, telephone ");
+		sql.append("FROM users WHERE id=:id;");
+		SqlParameterSource param = new MapSqlParameterSource().addValue("id", id);
+		List<User> userList = template.query(sql.toString(), param, USER_ROW_MAPPER);
+		if (userList.size() != 0) {
+			return userList.get(0);
+		} else {
+			return null;
+		}
+	}
 
 
 	/**
 	 * user情報を取得します.
 	 * 
 	 * @param email メールアドレス
-	 * @return userオブジェクト
+	 * @return      userオブジェクト
 	 */
 	public User findByEmail(String email) {
 		StringBuilder sql = new StringBuilder();
@@ -78,9 +98,9 @@ public class UserRepository {
 	/**
 	 * user情報を取得します.
 	 * 
-	 * @param email メールアドレス
+	 * @param email    メールアドレス
 	 * @param password パスワード
-	 * @return
+	 * @return         userオブジェクト
 	 */
 	public User findByEmailAndPassword(String email, String password) {
 		StringBuilder sql = new StringBuilder();

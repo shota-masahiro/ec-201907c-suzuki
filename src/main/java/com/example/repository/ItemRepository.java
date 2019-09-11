@@ -58,7 +58,7 @@ public class ItemRepository {
 	 * 商品情報一覧を取得します.
 	 * 
 	 * @param searchName 検索単語
-	 * @return 商品情報一覧
+	 * @return           商品情報一覧
 	 */
 	public List<Item> findBySearchName(String searchName) {
 		StringBuilder sql = new StringBuilder();
@@ -74,7 +74,7 @@ public class ItemRepository {
 	 * 商品詳細情報を取得します.
 	 * 
 	 * @param id 商品ID
-	 * @return 商品詳細情報
+	 * @return   商品詳細情報
 	 */
 	public Item load(Integer id) {
 		StringBuilder sql = new StringBuilder();

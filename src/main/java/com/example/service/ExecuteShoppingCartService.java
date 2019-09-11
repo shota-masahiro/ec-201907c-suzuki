@@ -1,7 +1,9 @@
 package com.example.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,7 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.domain.Order;
 import com.example.domain.OrderItem;
 import com.example.domain.OrderTopping;
+import com.example.enums.PaymentMethod;
 import com.example.form.ExecuteShoppingCartForm;
+import com.example.form.OrderItemForm;
 import com.example.repository.OrderItemRepository;
 import com.example.repository.OrderRepository;
 import com.example.repository.OrderToppingRepository;
@@ -34,7 +38,7 @@ public class ExecuteShoppingCartService {
 	 * カートの中が有の時は2つのテーブルにデータを挿入します.
 	 * 
 	 * @param form リクエストパラメータ
-	 * @return 注文情報
+	 * @return     注文情報
 	 */
 	@SuppressWarnings("null")
 	public Order insert(ExecuteShoppingCartForm form) {
@@ -76,9 +80,9 @@ public class ExecuteShoppingCartService {
 	/**
 	 * OrderItemオブジェクトを生成する処理を行います.
 	 * 
-	 * @param form リクエストパラメータ
+	 * @param form    リクエストパラメータ
 	 * @param orderId 主キー
-	 * @return OrderItemオブジェクト
+	 * @return        OrderItemオブジェクト
 	 */
 	private OrderItem createOrderItem(ExecuteShoppingCartForm form, Integer orderId) {
 		OrderItem orderItem = new OrderItem();
@@ -94,38 +98,46 @@ public class ExecuteShoppingCartService {
 	 * 注文情報を取得します.
 	 * 
 	 * @param orderId 注文ID
-	 * @return Orderオブジェクト
+	 * @return        Orderオブジェクト
 	 */
 	public Order findByOrderId(Integer orderId) {
 		return orderRepository.findByOrderId(orderId);
 	}
 	
 	
+	/**
+	 * 削除処理をします.
+	 * 
+	 * @param orderItemId 注文商品ID
+	 */
 	public void delete(Integer orderItemId) {
 		orderToppingRepository.delete(orderItemId);
 		orderItemRepository.delete(orderItemId);
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	/**
+	 * 更新処理をします.
+	 * 
+	 * @param form リクエストパラメータ
+	 */
+	@SuppressWarnings("unlikely-arg-type")
+	public void update(OrderItemForm form) {
+		Order order = orderRepository.findByOrderId(form.getIntId());
+		BeanUtils.copyProperties(form, order);
+		Date date = new Date();
+		order.setOrderDate(date);
+		if (PaymentMethod.CASHONDELIVERY.getKey().equals(form.getPaymentMethod())) {
+			order.setStatus(1);
+		} else if (PaymentMethod.CREDITCARD.getKey().equals(form.getPaymentMethod())) {
+			order.setStatus(2);
+		} else {
+			order.setStatus(3);
+		}
+		order.setDeliveryTime(form.getTimestampDeliveryDayTime());
+		order.setPaymentMethod(form.getIntePaymentMethod());
+		order.setTotalPrice(form.getIntTotalPrice());
+		orderRepository.update(order);
+	}
 
 }

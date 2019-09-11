@@ -55,7 +55,7 @@ public class OrderItemRepository {
 	 * 挿入処理をします.
 	 * 
 	 * @param orderItem OrderItemオブジェクト
-	 * @return 注文商品ID
+	 * @return          注文商品ID
 	 */
 	public Integer insert(OrderItem orderItem) {
 		StringBuilder sql = new StringBuilder();

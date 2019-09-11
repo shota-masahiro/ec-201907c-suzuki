@@ -83,13 +83,13 @@
 									<span th:text="${orderItem.item.name}">じゃがバターベーコン</span>
 								</div>
 							</td>
-							
+
 							<td>
 								<span class="price" th:text="${'&nbsp;' + orderItem.size}">Ｌ</span>
 								<span>&nbsp;&nbsp;</span><span th:text="${#numbers.formatInteger(orderItem.getSubTotal(), 1, 'COMMA') + '円'}">2,380円</span>
 								<span th:text="${'&nbsp;&nbsp;' +orderItem.quantity + '個'}"></span>
 							</td>
-							
+
 							<td>
 								<div th:if="${orderItem.orderToppingList}">
 									<div th:switch="${orderItem.size}">
@@ -130,10 +130,11 @@
 		</div>
 
 		<!-- table -->
-		<form action="order_finished.html">
+		<form action="order_finished.html" th:action="@{/showOrder/toOrder}" th:object="${orderItemForm}" method="post">
+			<input type="hidden" th:value="${order.id}" name="orderId">
+			<input type="hidden" th:value="${order.getCalcTotalPrice()}" name="totalPrice">
 			<div class="row">
-				<div
-					class="table-responsive col-lg-offset-3 col-lg-6 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
+				<div class="table-responsive col-lg-offset-3 col-lg-6 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
 					<h3 class="text-center">お届け先情報</h3>
 					<table class="table table-striped">
 						<tbody>
@@ -144,7 +145,7 @@
 									</div>
 								</td>
 								<td>
-									<input type="text">
+									<input type="text" name="destinationName" th:value="${user.name}">
 								</td>
 							</tr>
 							<tr>
@@ -154,7 +155,7 @@
 									</div>
 								</td>
 								<td>
-									<input type="text">
+									<input type="text" name="destinationEmail" th:value="${user.email}">
 								</td>
 							</tr>
 							<tr>
@@ -164,7 +165,7 @@
 									</div>
 								</td>
 								<td>
-									<input type="text">&nbsp;&nbsp;<button>住所検索</button>
+									<input type="text" name="destinationZipcode" th:value="${user.zipcode}">&nbsp;&nbsp;<button>住所検索</button>
 								</td>
 							</tr>
 							<tr>
@@ -174,7 +175,7 @@
 									</div>
 								</td>
 								<td>
-									<input type="text">
+									<input type="text" name="destinationAddress" th:value="${user.address}">
 								</td>
 							</tr>
 							<tr>
@@ -184,7 +185,7 @@
 									</div>
 								</td>
 								<td>
-									<input type="text">
+									<input type="text" name="destinationTel" th:value="${user.telephone}">
 								</td>
 							</tr>
 							<tr>
@@ -197,11 +198,10 @@
 									<div class="form-group">
 										<div class="row">
 											<div class="col-sm-12">
-												<label
-													class="control-label" style="color: red" for="inputPeriod">配達日時を入力してください</label>
+												<label class="control-label" style="color:red" for="inputPeriod">配達日時を入力してください</label>
 											</div>
 											<div class="col-sm-5">
-												<input type="date" name="deliveryDay" id="name"  class="form-control input-sm" />
+												<input type="date" name="deliveryDay" id="name" class="form-control input-sm" />
 											</div>
 										</div>
 
