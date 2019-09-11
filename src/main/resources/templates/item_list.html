@@ -5,11 +5,18 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ピザ屋のネット注文</title>
-<link href="css/bootstrap.css" rel="stylesheet">
-<link href="css/piza.css" rel="stylesheet">
+<link href="/css/bootstrap.css" rel="stylesheet">
+<link href="/css/piza.css" rel="stylesheet">
+
+<link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
 <script>
 $(function(){
-	var availableTag=[[(${itemListForAutocomplete})]];
+	var availableTag=[ [(${itemListForAutocomplete})] ];
 	$("#item_code").autocomplete({
 		source:availableTag,
 		noCase:true
@@ -36,7 +43,7 @@ $(function(){
 							class="icon-bar"></span>
 					</button>
 					<a class="navbar-brand" href="item_list.html"> <!-- 企業ロゴ --> <img
-						alt="main log" src="img/header_logo.png" height="35">
+						alt="main log" src="/img/header_logo.png" height="35">
 					</a>
 				</div>
 
@@ -68,7 +75,7 @@ $(function(){
 							<div class="form-group">
 								<label for="code" class="control-label col-sm-2">商品名</label>
 								<div class="col-sm-9">
-									<input type="text" name="searchName" id="item_code" class="form-control input-sm"/>
+									<input type="text" name="searchName" id="item_code" class="form-control input-sm">
 								</div>
 							</div>
 							<div class="text-center">
@@ -113,8 +120,7 @@ $(function(){
 		</div>
 	</div>
 	<!-- end container -->
-	<script
-		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
+	<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> -->
+	<script src="/js/bootstrap.min.js"></script>
 </body>
 </html>
