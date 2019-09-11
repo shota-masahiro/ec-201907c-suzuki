@@ -61,21 +61,18 @@ public class ShowItemListService {
 	 * @param itemList 商品一覧情報
 	 * @return 商品一覧情報
 	 */
-	public List<List<Item>> createItemList(List<Item> itemList) {
+	public List<List<Item>> createItemList(List<Item> itemPageList) {
 		List<Item> item3List = new ArrayList<>();
 		List<List<Item>> itemAllList = new ArrayList<>();
-		int i = 1;
-		for (Item item : itemList) {
-			item3List.add(item);
+		
+		for (int i = 1; i <= itemPageList.size(); i++) {
+			item3List.add(itemPageList.get(i - 1));
 			if (i % 3 == 0) {
 				itemAllList.add(item3List);
 				item3List = new ArrayList<>();
 			}
-			i++;
 		}
-		if (item3List.size() != 0) {
-			itemAllList.add(item3List);
-		}
+		itemAllList.add(item3List);
 		return itemAllList;
 	}
 
