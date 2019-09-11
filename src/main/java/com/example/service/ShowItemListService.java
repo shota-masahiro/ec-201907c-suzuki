@@ -94,13 +94,25 @@ public class ShowItemListService {
 	}
 
 
-
-
-
-
-
-
-
-
+	/**
+	 * オートコンプリート用の文字列を生成するメソッド.
+	 * 
+	 * @param itemList 商品情報
+	 * @return         商品名情報
+	 */
+	public StringBuilder getItemListForAutocomplete(List<Item> itemList) {
+		StringBuilder itemListForAutocomplete = new StringBuilder();
+		
+		for (int i = 0; i < itemList.size(); i++) {
+			if (i != 0) {
+				itemListForAutocomplete.append(",");
+			}
+			Item item = itemList.get(i);
+			itemListForAutocomplete.append("\"");
+			itemListForAutocomplete.append(item.getName());
+			itemListForAutocomplete.append("\"");
+		}
+		return itemListForAutocomplete;
+	}
 
 }

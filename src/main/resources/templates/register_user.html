@@ -5,11 +5,14 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ネットでピザ注文</title>
-<link href="css/bootstrap.css" rel="stylesheet">
+<link href="/css/bootstrap.css" rel="stylesheet">
 <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <!-- 住所自動採番用ajax実装 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script th:src="@{/js/register_user_add.js}"></script>
 </head>
 <body>
 	<div class="container">
@@ -64,7 +67,7 @@
 							<div class="form-group">
 								<label for="inputZipcode">郵便番号:</label>
 								<label class="control-label" style="color:red" for="inputError" th:errors="*{zipcode}" th:field="*{zipcode}">郵便番号を入力してください</label>
-								<input type="button" value="住所検索">
+								<input type="button" value="住所検索" id="addressButton">
 								<input type="text" name="zipcode" id="inputZipcode" class="form-control" placeholder="Zipcode">
 							</div>
 							
@@ -106,8 +109,7 @@
 
 	</div>
 	<!-- end container -->
-	<script
-		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
+	<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> -->
+	<script src="/js/bootstrap.min.js"></script>
 </body>
 </html>

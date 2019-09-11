@@ -37,6 +37,10 @@ public class ShowItemListController {
 		
 		List<Item> itemList = showItemListService.findAll(searchName);
 		List<List<Item>> itemAllList = showItemListService.createItemList(itemList);
+		
+		StringBuilder itemListForAutocomplete = showItemListService.getItemListForAutocomplete(itemList);
+		model.addAttribute("itemListForAutocomplete", itemListForAutocomplete);
+		
 		model.addAttribute("itemAllList", itemAllList);
 
 		return "item_list";
