@@ -106,6 +106,17 @@ public class ExecuteShoppingCartService {
 	
 	
 	/**
+	 * 注文情報を取得します.
+	 * 
+	 * @param userId ユーザID
+	 * @return       Orderオブジェクト
+	 */
+	public Order findByUserId(Integer userId) {
+		return orderRepository.findByUserId(userId);
+	}
+	
+	
+	/**
 	 * 削除処理をします.
 	 * 
 	 * @param orderItemId 注文商品ID
@@ -123,7 +134,7 @@ public class ExecuteShoppingCartService {
 	 */
 	@SuppressWarnings("unlikely-arg-type")
 	public void update(OrderItemForm form) {
-		Order order = orderRepository.findByOrderId(form.getIntId());
+		Order order = orderRepository.findByOrderId(form.getIntOrderId());
 		BeanUtils.copyProperties(form, order);
 		Date date = new Date();
 		order.setOrderDate(date);

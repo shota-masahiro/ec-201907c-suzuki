@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>注文履歴</title>
+
+<link href="/css/bootstrap.css" rel="stylesheet">
+<link href="/css/piza.css" rel="stylesheet">
+
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<script>
+ $(function(){
+	var availableTag=[ [(${itemListForAutocomplete})] ];
+	$("#item_code").autocomplete({
+		source:availableTag
+	
+	});
+});
+</script>
+
+<link th:href="@{/css/bootstrap.css}" rel="stylesheet">
+<link th:href="@{/css/piza.css}" rel="stylesheet">
+</head>
+<body>
+
+	<div class="container">
+
+		<span th:include="fragment::hedder2"></span>
+
+		<!-- table -->
+		<div class="row">
+			<div
+				class="table-responsive col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
+				<h3 class="text-center">注文履歴</h3>
+				<table class="table table-striped">
+					<tbody>
+						<tr>
+							<th>
+								<div class="text-center" >商品名</div>
+							</th>
+							<th>
+								<div class="text-left">注文日</div>
+							</th>
+							<th>
+								<div class="text-left">価格(税抜)</div>
+							</th>
+						</tr>
+
+						<tr th:each="orderItem:${order.orderItemList}">
+							<td class="imagescreen">
+							<a th:href="@{'/detail/showDetail?id=' + ${orderItem.item.id}}">
+								<img th:src="@{'/img/'+${orderItem.item.imagePath}}" width="200" height="150"><br>
+								<span th:text="${orderItem.item.name}" th:align="right"  >商品名</span>
+								
+								</a>
+							</td> 
+							<td th:text="${#dates.format(order.orderDate,'yyyy年MM月dd日')}">注文日</td>
+ 							<td>  <span th:text="${#numbers.formatInteger(orderItem.getSubTotal(),2,'COMMA')}">値段</span><span>円(税抜)</span>
+							</td> 
+						</tr>
+	</tbody>
+	</table>
+	</div>
+	</div>
+	</div>
+	
+
+</body>
+</html>
