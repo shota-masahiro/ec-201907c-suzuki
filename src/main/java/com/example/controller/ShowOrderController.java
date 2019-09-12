@@ -144,26 +144,4 @@ public class ShowOrderController {
 		return "order_finished";
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 }

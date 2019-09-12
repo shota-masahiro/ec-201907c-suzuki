@@ -43,7 +43,7 @@ $(function(){
 					</div>
 					
 					<div class="panel-body">
-						<form method="post" th:action="@{/itemList}" class="form-horizontal">
+						<form method="post" th:action="@{/}" class="form-horizontal">
 							<div class="form-group">
 								<label for="code" class="control-label col-sm-2">商品名</label>
 								<div class="col-sm-9">
@@ -58,7 +58,7 @@ $(function(){
 					</div>
 				</div>
 				
-				<form th:action="@{/itemList}" th:object="${showItemListForm}" method="post">
+				<form th:action="@{/}" th:object="${showItemListForm}" method="post">
 					<div>
 						<select id="sort_select" name="element">
 							<option th:each="size:${selectSizeMap}" th:text="${size.value}" th:value="${size.key}"></option>
@@ -103,7 +103,7 @@ $(function(){
 
 				<!-- ページング機能 -->
 				<div th:if="${itemPage.totalPages > 0}" class="pagination" th:each="pageNumber:${pageNumbers}">
-					<a th:href="@{/itemList(page=${pageNumber}, name=${name}, element=${element}, order=${order})}"
+					<a th:href="@{/(page=${pageNumber}, name=${name}, element=${element}, order=${order})}"
 					   th:text="${pageNumber}"
 					   th:class="${pageNumber==itemPage.number + 1} ? active">
 					</a>
