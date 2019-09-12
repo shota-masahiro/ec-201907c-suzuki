@@ -32,6 +32,7 @@ public class ShowOrderController {
 
 	@Autowired
 	private RegisterUserService registerUserService;
+	
 
 	@Autowired
 	private OrderItemForm setUpOrderItemForm() {
@@ -93,6 +94,10 @@ public class ShowOrderController {
 	public String toOrder(
 			OrderItemForm form,
 			Model model) {
+		
+		//User情報の取得
+		
+		
 
 		executeShoppingCartService.update(form);
 
