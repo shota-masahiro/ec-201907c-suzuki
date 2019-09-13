@@ -55,20 +55,21 @@
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<p class="navbar-text navbar-right">
 						
-						<!-- <span  sec:authorize="isAuthenticated()">
-							<span sec:authentication="principal.user.name" class="naming"></span>さんこんにちは
+						<span  sec:authorize="isAuthenticated()">
+							<span sec:authentication="principal.user.name" class="naming"></span>さんこんにちは &nbsp;
 							<a th:href="@{https://mobile.twitter.com/rakrakpiza}">
 								<i class="fab fa-twitter"></i>
 							</a>
 							<a th:href="@{https://www.instagram.com/rakurakupiza}">
 								<i class="fab fa-instagram"></i>
-							</a>
+							</a>&nbsp;
 							<a th:href="@{/executeShoppingCart/header}" class="navbar-link">ショッピングカート</a>&nbsp;&nbsp;
-							<a href="order_history.html" class="navbar-link" th:href="@{/OrderStatus}"> 注文履歴</a>&nbsp;&nbsp;
+							<a href="order_history.html" class="navbar-link" th:href="@{/OrderStatus}">注文履歴</a>&nbsp;&nbsp;
+							<a href="order_history.html" class="navbar-link" th:href="@{/OrderStatus}">マイページ</a>&nbsp;&nbsp;
 							<a class="navbar-link" th:href="@{/logout}">ログアウト</a>
-						</span> -->
+						</span>
 
-						<!-- <span sec:authorize="isAnonymous()"> -->
+						<span sec:authorize="isAnonymous()">
 							<a th:href="@{https://mobile.twitter.com/rakrakpiza}">
 								<i class="fab fa-twitter"></i>
 							</a>
@@ -76,10 +77,8 @@
 								<i class="fab fa-instagram"></i>
 							</a>
 							<a th:href="@{/executeShoppingCart/header}" class="navbar-link">ショッピングカート</a>&nbsp;&nbsp;
-							<a th:href="@{/orderHistory}" href="order_history.html" class="navbar-link">注文履歴</a>&nbsp;&nbsp;
 							<a th:href="@{/loginUser}" class="navbar-link">ログイン</a>&nbsp;&nbsp;
-							<a th:href="@{/logout}" class="navbar-link">ログアウト</a>
-						<!-- </span> -->
+						</span>
 
 					</p>
 				</div>

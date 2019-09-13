@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * ショッピングカート操作フォーム.
  * 
- * @author takahiro.araki, shota.suzuki
+ * @author shota.suzuki
  *
  */
 public class ExecuteShoppingCartForm {

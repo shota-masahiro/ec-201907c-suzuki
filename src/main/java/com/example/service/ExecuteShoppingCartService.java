@@ -72,7 +72,6 @@ public class ExecuteShoppingCartService {
 			orderTopping.setOrderItemId(orderItemId);
 			orderToppingRepository.insert(orderTopping);
 		}
-		System.out.println(orderId);
 		return orderRepository.findByOrderId(orderId);
 	}
 
@@ -117,6 +116,17 @@ public class ExecuteShoppingCartService {
 	
 	
 	/**
+	 * 注文情報を取得します.
+	 * 
+	 * @param userId ユーザID
+	 * @return       Orderオブジェクト
+	 */
+	public Order findByUserId2(Integer userId) {
+		return orderRepository.findByUserId2(userId);
+	}
+	
+	
+	/**
 	 * 削除処理をします.
 	 * 
 	 * @param orderItemId 注文商品ID
@@ -149,6 +159,17 @@ public class ExecuteShoppingCartService {
 		order.setPaymentMethod(form.getIntePaymentMethod());
 		order.setTotalPrice(form.getIntTotalPrice());
 		orderRepository.update(order);
+	}
+	
+	
+	/**
+	 * 更新処理をします.
+	 * 
+	 * @param orderId    ユーザID
+	 * @param userId tokenID
+	 */
+	public void update2(Integer orderId, Integer userId) {
+		orderRepository.update2(orderId, userId);
 	}
 
 }

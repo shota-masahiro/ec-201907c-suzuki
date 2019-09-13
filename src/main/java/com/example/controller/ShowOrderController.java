@@ -36,10 +36,10 @@ public class ShowOrderController {
 
 	@Autowired
 	private RegisterUserService registerUserService;
-	
+
 	@Autowired
 	private SendMailService sendMailService;
-	
+
 
 	@Autowired
 	private OrderItemForm setUpOrderItemForm() {
@@ -78,7 +78,7 @@ public class ShowOrderController {
 			paymentMap.put(paymentMethod.getKey(), paymentMethod.getValue());
 		}
 		model.addAttribute("paymentMap", paymentMap);
-		
+
 		User user = registerUserService.load(6);
 		model.addAttribute("user", user);
 
@@ -101,16 +101,16 @@ public class ShowOrderController {
 	public String toOrder(
 			OrderItemForm form,
 			Model model) {
-		
+
 		//送信メールの準備
 		Context context = new Context();
-		
+
 		//User情報の取得
 		Order order = executeShoppingCartService.findByOrderId(form.getIntOrderId());
-		
+
 		//ユーザー名をsetする
 		context.setVariable("user_name", form.getDestinationName());
-		
+
 		//商品名を格納
 		List<OrderItem> orderItemList = order.getOrderItemList();
 		List<Item> itemList = new ArrayList<>();
@@ -122,20 +122,20 @@ public class ShowOrderController {
 			nameList.add(item.getName());
 		}
 		context.setVariable("name_list", nameList);
-		
+
 		//金額を格納
 		context.setVariable("total_price", order.getTotalPrice());
-		
+
 		//支払方法を格納
 		if (order.getPaymentMethod().equals(1)) {
 			context.setVariable("paymentMethod", "代金引換");
 		} else if (order.getPaymentMethod().equals(2)) {
 			context.setVariable("paymentMethod", "クレジットカード");
 		}
-		
+
 		//配達日を格納
 		context.setVariable("delivery_time", order.getDeliveryTime());
-		
+
 		//メール送信処理
 		sendMailService.sendMail(context, form.getDestinationEmail());
 

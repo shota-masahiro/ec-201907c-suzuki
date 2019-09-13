@@ -55,6 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		    		"/",
 		    		"/detail",
 		    		"/detail/showDetail",
+		    		"/executeShoppingCart/header",
 		    		"/executeShoppingCart/toInCart",
 		    		"/executeShoppingCart/delete")
 		    .permitAll()

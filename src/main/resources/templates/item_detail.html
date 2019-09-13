@@ -23,7 +23,6 @@
 			<input type="hidden" th:value="${item.id}" name="itemId">
 			<input type="hidden" value="0" name="status">
 
-			<input type="hidden" value="1" name="userId">
 		<div class="row">
 			<div class="col-xs-offset-2 col-xs-8">
 
@@ -83,7 +82,7 @@
 
 								<div class="col-sm-12" th:each="topping:${toppingAllList}">
 									<label class="checkbox-inline" th:each="t:${topping}">
-										<input type="checkbox" th:value="${t.key}" th:text="${t.value}" class="topping_checkbox">&nbsp;&nbsp;&nbsp;
+										<input type="checkbox" th:value="${t.key}" th:text="${t.value}" name="toppingIdList" class="topping_checkbox">&nbsp;&nbsp;&nbsp;
 									</label>
 								</div>
 
@@ -111,7 +110,7 @@
 					<div class="col-xs-offset-2 col-xs-10">
 						<div class="form-group">
 							<span id="total-price">
-								この商品金額：<span id="totalPrice" th:value="${item.priceM}"></span> 円(税抜)
+								この商品金額：<span id="totalPrice" th:value="${item.priceM}"></span>円(税抜)
 							</span>
 						</div>
 					</div>
