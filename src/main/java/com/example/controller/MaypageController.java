@@ -9,8 +9,7 @@ public class MaypageController {
 	
 	@RequestMapping("")
 	public String index() {
-		
-		return "";
+		return "maypage";
 	}
 	
 	
