@@ -64,7 +64,7 @@
 										<span>円(税抜)</span>
 									</label>
 								</div>
-								
+
 							</div>
 						</div>
 					</div>
@@ -128,6 +128,27 @@
 			</div>
 		</div>
 		</form>
+		
+		<strong>コメント入力欄</strong>
+		<div>
+			この商品の平均評価:<span th:text="${star}"></span>
+		</div>
+		<form action="#" method="post">
+			<input type="hidden" th:value="${item.id}" name="itemId">
+			<div>
+				名前:<input type="text" name="name">
+			</div>
+			<div>
+				コメント:<textarea rows="" cols="" name="content"></textarea>
+			</div>
+			<div>
+				点数:<select name="review">
+					<option th:each="review:${reviewMap}" th:value="${review.key}" th:text="${review.value}" th:selected="${review.value == 5}"></option>
+				</select>
+			</div>
+			<button>レビューを送信</button>
+		</form>
+		<a th:href="@{/review(itemId=${item.id})}">商品のレビューを見る</a>
 
 	</div>
 	<!-- end container -->

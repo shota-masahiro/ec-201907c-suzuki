@@ -18,6 +18,12 @@ import com.example.repository.OrderItemRepository;
 import com.example.repository.OrderRepository;
 import com.example.repository.OrderToppingRepository;
 
+/**
+ * ショッピングカート内の処理を操作するサービス.
+ * 
+ * @author shota.suzuki
+ *
+ */
 @Service
 @Transactional
 public class ExecuteShoppingCartService {

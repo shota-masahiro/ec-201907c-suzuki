@@ -30,11 +30,11 @@ public class ReviewRepository {
 	 */
 	private static final RowMapper<Review> REVIEW_ROW_MAPPER = (rs, i) -> {
 		Review review = new Review();
-		review.setId(rs.getInt(""));
-		review.setItemId(rs.getInt(""));
-		review.setName(rs.getString(""));
-		review.setContent(rs.getString(""));
-		review.setReview(rs.getInt(""));
+		review.setId(rs.getInt("id"));
+		review.setItemId(rs.getInt("item_id"));
+		review.setName(rs.getString("name"));
+		review.setContent(rs.getString("content"));
+		review.setReview(rs.getInt("review"));
 		return review;
 	};
 
@@ -43,18 +43,18 @@ public class ReviewRepository {
 	 * レビュー情報を取得します.
 	 * 
 	 * @param itemId 商品ID
-	 * @return レビュー情報一覧
+	 * @return       レビュー情報一覧
 	 */
 	public List<Review> findByItemId(Integer itemId) {
 		StringBuilder sql = new StringBuilder();
-		sql.append("SELECT id, item_id, name, content, review");
+		sql.append("SELECT id, item_id, name, content, review ");
 		sql.append("FROM reviews WHERE item_id=:itemId;");
 		SqlParameterSource param = new MapSqlParameterSource().addValue("itemId", itemId);
 		List<Review> reviewList = template.query(sql.toString(), param, REVIEW_ROW_MAPPER);
 		return reviewList;
 	}
-	
-	
+
+
 	/**
 	 * 挿入処理をします.
 	 * 
@@ -67,21 +67,20 @@ public class ReviewRepository {
 		SqlParameterSource param = new BeanPropertySqlParameterSource(review);
 		template.update(sql.toString(), param);
 	}
-	
-	
+
+
 	/**
-	 * 商品の平均評価の値を取得します.
+	 * 商品の平均評価を取得します.
 	 * 
 	 * @param itemId 商品ID
-	 * @return 平均評価
+	 * @return       平均評価
 	 */
 	public Integer averageReview(Integer itemId) {
 		StringBuilder sql = new StringBuilder();
 		sql.append("SELECT avg(review) ");
 		sql.append("FROM reviews WHERE item_id=:itemId;");
 		SqlParameterSource param = new MapSqlParameterSource().addValue("itemId", itemId);
-		Integer averageReview = (Integer)template.queryForObject(sql.toString(), param, Integer.class);
-		return averageReview;
+		return (Integer)template.queryForObject(sql.toString(), param, Integer.class);
 	}
 
 }
