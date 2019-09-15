@@ -14,6 +14,10 @@ import com.example.domain.Item;
 import com.example.domain.Topping;
 import com.example.service.ShowItemDetailService;
 
+/**
+ * @author shota.suzuki
+ *
+ */
 @Controller
 @RequestMapping("/detail")
 public class ShowItemDetailController {
@@ -46,6 +50,8 @@ public class ShowItemDetailController {
 			quantityMap.put(i, i);
 		}
 		model.addAttribute("quantityMap", quantityMap);
+		
+		
 
 		return "item_detail";
 	}
