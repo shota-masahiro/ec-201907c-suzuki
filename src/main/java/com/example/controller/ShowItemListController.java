@@ -23,12 +23,12 @@ import com.example.service.ShowItemListService;
  *
  */
 @Controller
-@RequestMapping("/itemList")
+@RequestMapping("/")
 public class ShowItemListController {
 
 	@Autowired
 	private ShowItemListService showItemListService;
-	
+
 	@ModelAttribute
 	public ShowItemListForm setUpShowItemListForm() {
 		return new ShowItemListForm();
@@ -43,53 +43,54 @@ public class ShowItemListController {
 	 */
 	@RequestMapping("")
 	public String index(ShowItemListForm form, String searchName, Model model) {
-		
+
 		List<Item> itemList = null;
-		
+
 		//ページング指定
 		if (form.getPage() == null) {
 			form.setPage(1);
 		}
-		
+
 		//並び替え
-		if (form.getElement() != null) {
-			System.out.println(form);
+		if (form.getElement() != null && !"".equals(form.getElement())) {
 			itemList = showItemListService.findByPrice(form);
 		}
-		
+
 		//トップ画面表示 to 商品検索
 		if (form.getElement() == null && searchName == null || searchName != null) {
 			itemList = showItemListService.findAll(searchName);
+		} else {
+			itemList = showItemListService.findAll(searchName);
 		}
-		
+
 		//商品検索・並び替えした後もページングできるようにスコープに格納
 		model.addAttribute("name", searchName);
 		model.addAttribute("element", form.getElement());
 		model.addAttribute("order", form.getOrder());
-		
+
 		//オートコンプリート
 		List<Item> autoItemList = showItemListService.findAll("");
 		StringBuilder itemListForAutocomplete = showItemListService.getItemListForAutocomplete(autoItemList);
 		model.addAttribute("itemListForAutocomplete", itemListForAutocomplete);
-		
+
 		//ページング処理
 		Page<Item> itemPage = showItemListService.showListPaging(form.getPage(), VIEW_SIZE, itemList);
 		List<Item> itemPageList = itemPage.getContent();
 		List<List<Item>> itemAllList = showItemListService.createItemList(itemPageList);
 		model.addAttribute("itemAllList", itemAllList);
-		
+
 		//ページングのリンクを作成
 		List<Integer> pageNumbers = calcPageNumbers(model, itemPage);
 		model.addAttribute("itemPage", itemPage);
 		model.addAttribute("pageNumbers", pageNumbers);
-		
+
 		//並び替えの値をmapにset
 		Map<String, String> selectSizeMap = new LinkedHashMap<>();
 		selectSizeMap.put("", "---");
 		selectSizeMap.put("price_m", "Mサイズ");
 		selectSizeMap.put("price_l", "Lサイズ");
 		model.addAttribute("selectSizeMap", selectSizeMap);
-		
+
 		//並び替えの値をmapにset
 		Map<String, String> sortPriceMap = new LinkedHashMap<>();
 		sortPriceMap.put("", "---");

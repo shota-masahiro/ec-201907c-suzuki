@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+</head>
+<body>
+
+<div th:fragment="hedder1">
+	<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" th:href="@{/}">
+						<!-- 企業ロゴ -->
+						<img alt="main log" th:src="@{/img/header_logo.png}" height="35">
+					</a>
+				</div>
+
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				</div>
+				<!-- /.navbar-collapse -->
+			</div>
+			<!-- /.container-fluid -->
+	</nav>
+</div>
+
+<!--  ヘッダー２（商品一覧・詳細、ショッピングカート、注文確認、決済画面で使用）    -->
+<div th:fragment="hedder2">
+	<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" th:href="@{/}">
+						<!-- 企業ロゴ -->
+						<img alt="main log" th:src="@{/img/header_logo.png}" height="35">
+					</a>
+				</div>
+
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<p class="navbar-text navbar-right">
+						
+						<span  sec:authorize="isAuthenticated()">
+							<span sec:authentication="principal.user.name" class="naming"></span>さんこんにちは &nbsp;
+							<a th:href="@{https://mobile.twitter.com/rakrakpiza}">
+								<i class="fab fa-twitter"></i>
+							</a>
+							<a th:href="@{https://www.instagram.com/rakurakupiza}">
+								<i class="fab fa-instagram"></i>
+							</a>&nbsp;
+							<a th:href="@{/executeShoppingCart/header}" class="navbar-link">ショッピングカート</a>&nbsp;&nbsp;
+							<a href="order_history.html" class="navbar-link" th:href="@{/maypage}">マイページ</a>&nbsp;&nbsp;
+							<a class="navbar-link" th:href="@{/logout}">ログアウト</a>
+						</span>
+
+						<span sec:authorize="isAnonymous()">
+							<a th:href="@{https://mobile.twitter.com/rakrakpiza}">
+								<i class="fab fa-twitter"></i>
+							</a>
+							<a th:href="@{https://www.instagram.com/rakurakupiza}">
+								<i class="fab fa-instagram"></i>
+							</a>
+							<a th:href="@{/executeShoppingCart/header}" class="navbar-link">ショッピングカート</a>&nbsp;&nbsp;
+							<a th:href="@{/loginUser}" class="navbar-link">ログイン</a>&nbsp;&nbsp;
+						</span>
+
+					</p>
+				</div>
+				<!-- /.navbar-collapse -->
+			</div>
+			<!-- /.container-fluid -->
+		</nav>
+</div>
+
+</body>
+</html>

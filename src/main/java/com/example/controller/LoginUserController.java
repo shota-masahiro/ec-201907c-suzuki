@@ -49,47 +49,48 @@ public class LoginUserController {
 		return "login";
 	}
 
+	//ログイン・ログアウト処理はSecurityConfigで行います.
 
-	/**
-	 * ログイン処理をします.
-	 * 
-	 * @return 商品一覧画面
-	 */
-	@RequestMapping("/login")
-	public String login(
-			@Validated LoginUserForm form,
-			BindingResult result,
-			Model model) {
-
-		String errorMessage = null;
-		
-		System.out.println(form);
-
-		if (result.hasErrors()) {
-			return toLogin(model, errorMessage);
-		}
-
-		User user = registerUserService.findByEmailAndPassword(form);
-		if (user == null) {
-			errorMessage = "メールまたはパスワードが不正です";
-			return toLogin(model, errorMessage);
-		}
-		
-		session.setAttribute("user", user);
-
-		return "test";
-	}
+//	/**
+//	 * ログイン処理をします.
+//	 * 
+//	 * @return 商品一覧画面
+//	 */
+//	@RequestMapping("/login")
+//	public String login(
+//			@Validated LoginUserForm form,
+//			BindingResult result,
+//			Model model) {
+//
+//		String errorMessage = null;
+//		
+//		System.out.println(form);
+//
+//		if (result.hasErrors()) {
+//			return toLogin(model, errorMessage);
+//		}
+//
+//		User user = registerUserService.findByEmailAndPassword(form);
+//		if (user == null) {
+//			errorMessage = "メールまたはパスワードが不正です";
+//			return toLogin(model, errorMessage);
+//		}
+//		
+//		session.setAttribute("user", user);
+//
+//		return "login";
+//	}
 	
 	
-	/**
-	 * ログアウト処理をします.
-	 * 
-	 * @return ログイン画面
-	 */
-	@RequestMapping("/logout")
-	public String logout() {
-		session.removeAttribute("user");
-		return "login";
-	}
+//	/**
+//	 * ログアウト処理をします.
+//	 * 
+//	 * @return ログイン画面
+//	 */
+//	@RequestMapping("/logout")
+//	public String logout() {
+//		session.removeAttribute("user");
+//		return "login";
+//	}
 
 }

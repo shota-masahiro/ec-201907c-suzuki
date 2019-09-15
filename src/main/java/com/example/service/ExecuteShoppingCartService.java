@@ -18,6 +18,12 @@ import com.example.repository.OrderItemRepository;
 import com.example.repository.OrderRepository;
 import com.example.repository.OrderToppingRepository;
 
+/**
+ * ショッピングカート内の処理を操作するサービス.
+ * 
+ * @author shota.suzuki
+ *
+ */
 @Service
 @Transactional
 public class ExecuteShoppingCartService {
@@ -72,7 +78,6 @@ public class ExecuteShoppingCartService {
 			orderTopping.setOrderItemId(orderItemId);
 			orderToppingRepository.insert(orderTopping);
 		}
-		System.out.println(orderId);
 		return orderRepository.findByOrderId(orderId);
 	}
 
@@ -106,6 +111,28 @@ public class ExecuteShoppingCartService {
 	
 	
 	/**
+	 * 注文情報を取得します.
+	 * 
+	 * @param userId ユーザID
+	 * @return       Orderオブジェクト
+	 */
+	public Order findByUserId(Integer userId) {
+		return orderRepository.findByUserId(userId);
+	}
+	
+	
+	/**
+	 * 注文情報を取得します.
+	 * 
+	 * @param userId ユーザID
+	 * @return       Orderオブジェクト
+	 */
+	public Order findByUserId2(Integer userId) {
+		return orderRepository.findByUserId2(userId);
+	}
+	
+	
+	/**
 	 * 削除処理をします.
 	 * 
 	 * @param orderItemId 注文商品ID
@@ -123,7 +150,7 @@ public class ExecuteShoppingCartService {
 	 */
 	@SuppressWarnings("unlikely-arg-type")
 	public void update(OrderItemForm form) {
-		Order order = orderRepository.findByOrderId(form.getIntId());
+		Order order = orderRepository.findByOrderId(form.getIntOrderId());
 		BeanUtils.copyProperties(form, order);
 		Date date = new Date();
 		order.setOrderDate(date);
@@ -138,6 +165,17 @@ public class ExecuteShoppingCartService {
 		order.setPaymentMethod(form.getIntePaymentMethod());
 		order.setTotalPrice(form.getIntTotalPrice());
 		orderRepository.update(order);
+	}
+	
+	
+	/**
+	 * 更新処理をします.
+	 * 
+	 * @param orderId    ユーザID
+	 * @param userId tokenID
+	 */
+	public void update2(Integer orderId, Integer userId) {
+		orderRepository.update2(orderId, userId);
 	}
 
 }

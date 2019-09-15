@@ -102,7 +102,7 @@ public class OrderItemForm {
 	}
 
 
-	public Integer getIntId() {
+	public Integer getIntOrderId() {
 		return Integer.parseInt(orderId);
 	}
 	public String getOrderId() {

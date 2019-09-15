@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>注文履歴</title>
+
+<link href="/css/bootstrap.css" rel="stylesheet">
+<link href="/css/piza.css" rel="stylesheet">
+
+</head>
+<body>
+
+	<div class="container">
+
+		<span th:include="fragment::hedder2"></span>
+
+		<!-- table -->
+		<div class="row">
+			<div class="table-responsive col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
+
+				<div>
+					<a th:href="@{/orderHistory}">注文履歴</a>
+				</div>
+
+				<br>
+
+				<div>
+					<a>ポイント残高</a>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>
