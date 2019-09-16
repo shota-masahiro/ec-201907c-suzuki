@@ -30,6 +30,9 @@ public class ExecuteReviewController {
 	@Autowired
 	private ShowItemDetailService showItemDetailService;
 
+	@Autowired
+	private ShowItemDetailController showItemDetailController;
+
 	@ModelAttribute
 	public ReviewForm setUpReviewForm() {
 		return new ReviewForm();
@@ -49,8 +52,28 @@ public class ExecuteReviewController {
 		model.addAttribute(item);
 		List<Review> reviewList = executeReviewService.findByItemId(Integer.parseInt(itemId));
 		model.addAttribute("reviewList", reviewList);
-		return "test";
+		return "item_review";
 	}
+
+
+	/**
+	 * 挿入処理をします.
+	 * 
+	 * @param form  リクエストパラメータ
+	 * @param model リクエストスコープ
+	 * @return      商品詳細画面
+	 */
+	@RequestMapping("/insert")
+	public String insert(ReviewForm form, Model model) {
+		executeReviewService.insert(form);
+		return showItemDetailController.index(form.getItemId(), model);
+	}
+
+
+
+
+
+
 
 
 }

@@ -34,13 +34,13 @@ public class ShowItemDetailController {
 	/**
 	 * 商品詳細情報を出力します.
 	 * 
-	 * @param id    商品ID
+	 * @param itemId    商品ID
 	 * @param model リクエストスコープ
 	 * @return      商品詳細画面
 	 */
 	@RequestMapping("/showDetail")
-	public String index(String id, Model model) {
-		Item item = showItemDetailService.showDetail(id);
+	public String index(String itemId, Model model) {
+		Item item = showItemDetailService.showDetail(itemId);
 		model.addAttribute("item", item);
 
 		int j = 1;

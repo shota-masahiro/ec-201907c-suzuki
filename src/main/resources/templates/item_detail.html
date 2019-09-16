@@ -133,7 +133,7 @@
 		<div>
 			この商品の平均評価:<span th:text="${star}"></span>
 		</div>
-		<form action="#" method="post">
+		<form th:action="@{/review/insert}" method="post">
 			<input type="hidden" th:value="${item.id}" name="itemId">
 			<div>
 				名前:<input type="text" name="name">

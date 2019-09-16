@@ -21,6 +21,9 @@ public class ReviewForm {
 	private String review;
 
 
+	public Integer getIntItemId() {
+		return Integer.parseInt(this.itemId);
+	}
 	public String getItemId() {
 		return itemId;
 	}
@@ -44,7 +47,10 @@ public class ReviewForm {
 		this.content = content;
 	}
 
-
+	
+	public Integer getIntReview() {
+		return Integer.parseInt(this.review);
+	}
 	public String getReview() {
 		return review;
 	}

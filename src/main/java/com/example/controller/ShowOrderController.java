@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,7 @@ import org.thymeleaf.context.Context;
 
 import com.example.common.SendMailService;
 import com.example.domain.Item;
+import com.example.domain.LoginUser;
 import com.example.domain.Order;
 import com.example.domain.OrderItem;
 import com.example.domain.User;
@@ -54,7 +56,7 @@ public class ShowOrderController {
 	 * @return        注文確認画面
 	 */
 	@RequestMapping("")
-	public String index(String orderId, Model model) {
+	public String index(String orderId, @AuthenticationPrincipal LoginUser loginUser, Model model) {
 
 		Order checkOrder = executeShoppingCartService.findByOrderId(Integer.parseInt(orderId));
 
@@ -79,7 +81,7 @@ public class ShowOrderController {
 		}
 		model.addAttribute("paymentMap", paymentMap);
 
-		User user = registerUserService.load(6);
+		User user = registerUserService.load(loginUser.getUser().getId());
 		model.addAttribute("user", user);
 
 		Order order = executeShoppingCartService.findByOrderId(Integer.parseInt(orderId));

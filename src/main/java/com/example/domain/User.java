@@ -31,6 +31,9 @@ public class User {
 
 	/** 電話番号 */
 	private String telephone;
+	
+	/** ポイント */
+	private Integer point;
 
 
 	public User() {
@@ -38,8 +41,8 @@ public class User {
 	}
 
 
-	public User(Integer id, String name, String email, String password, String zipcode, String address,
-			String telephone) {
+	public User(@NotBlank(message = "") Integer id, String name, String email, String password, String zipcode,
+			String address, String telephone, Integer point) {
 		this.id = id;
 		this.name = name;
 		this.email = email;
@@ -47,6 +50,7 @@ public class User {
 		this.zipcode = zipcode;
 		this.address = address;
 		this.telephone = telephone;
+		this.point = point;
 	}
 
 
@@ -106,10 +110,18 @@ public class User {
 	}
 
 
+	public Integer getPoint() {
+		return point;
+	}
+	public void setPoint(Integer point) {
+		this.point = point;
+	}
+
+
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", name=" + name + ", email=" + email + ", password=" + password + ", zipcode="
-				+ zipcode + ", address=" + address + ", telephone=" + telephone + "]";
+				+ zipcode + ", address=" + address + ", telephone=" + telephone + ", point=" + point + "]";
 	}
 
 }
