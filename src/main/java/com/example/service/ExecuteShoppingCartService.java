@@ -108,8 +108,8 @@ public class ExecuteShoppingCartService {
 	public Order findByOrderId(Integer orderId) {
 		return orderRepository.findByOrderId(orderId);
 	}
-	
-	
+
+
 	/**
 	 * 注文情報を取得します.
 	 * 
@@ -119,8 +119,8 @@ public class ExecuteShoppingCartService {
 	public Order findByUserId(Integer userId) {
 		return orderRepository.findByUserId(userId);
 	}
-	
-	
+
+
 	/**
 	 * 注文情報を取得します.
 	 * 
@@ -130,8 +130,8 @@ public class ExecuteShoppingCartService {
 	public Order findByUserId2(Integer userId) {
 		return orderRepository.findByUserId2(userId);
 	}
-	
-	
+
+
 	/**
 	 * 削除処理をします.
 	 * 
@@ -141,8 +141,8 @@ public class ExecuteShoppingCartService {
 		orderToppingRepository.delete(orderItemId);
 		orderItemRepository.delete(orderItemId);
 	}
-	
-	
+
+
 	/**
 	 * 更新処理をします.
 	 * 
@@ -166,8 +166,8 @@ public class ExecuteShoppingCartService {
 		order.setTotalPrice(form.getIntTotalPrice());
 		orderRepository.update(order);
 	}
-	
-	
+
+
 	/**
 	 * 更新処理をします.
 	 * 
