@@ -22,9 +22,10 @@ public class RegisterUserService {
 
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+
 
 	/**
 	 * user情報の挿入をします.
@@ -33,10 +34,11 @@ public class RegisterUserService {
 	 */
 	public void insert(User user) {
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		user.setPoint(0);
 		userRepository.insert(user);
 	}
-	
-	
+
+
 	/**
 	 * user情報を取得します.
 	 * 
@@ -46,8 +48,8 @@ public class RegisterUserService {
 	public User load(Integer id) {
 		return userRepository.load(id);
 	}
-	
-	
+
+
 	/**
 	 * user情報を取得します.
 	 * 
@@ -57,8 +59,8 @@ public class RegisterUserService {
 	public User findByEmail(RegisterUserForm form) {
 		return userRepository.findByEmail(form.getEmail());
 	}
-	
-	
+
+
 	/**
 	 * user情報を取得します.
 	 * 
@@ -67,6 +69,16 @@ public class RegisterUserService {
 	 */
 	public User findByEmailAndPassword(LoginUserForm form) {
 		return userRepository.findByEmailAndPassword(form.getEmail(), form.getPassword());
+	}
+
+
+	/**
+	 * 更新処理をします.
+	 * 
+	 * @param user userオブジェクト
+	 */
+	public void updatePoint(User user) {
+		userRepository.updatePoint(user);
 	}
 
 }

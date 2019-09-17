@@ -37,6 +37,7 @@ public class UserRepository {
 		user.setZipcode(rs.getString("zipcode"));
 		user.setAddress(rs.getString("address"));
 		user.setTelephone(rs.getString("telephone"));
+		user.setPoint(rs.getInt("point"));
 		return user;
 	};
 
@@ -48,13 +49,13 @@ public class UserRepository {
 	 */
 	public void insert(User user) {
 		StringBuilder sql = new StringBuilder();
-		sql.append("INSERT INTO users(name, email, password, zipcode, address, telephone) ");
-		sql.append("VALUES(:name, :email, :password, :zipcode, :address, :telephone);");
+		sql.append("INSERT INTO users(name, email, password, zipcode, address, telephone, point) ");
+		sql.append("VALUES(:name, :email, :password, :zipcode, :address, :telephone, :point);");
 		SqlParameterSource param = new BeanPropertySqlParameterSource(user);
 		template.update(sql.toString(), param);
 	}
-	
-	
+
+
 	/**
 	 * user情報を取得します.
 	 * 
@@ -63,7 +64,7 @@ public class UserRepository {
 	 */
 	public User load(Integer id) {
 		StringBuilder sql = new StringBuilder();
-		sql.append("SELECT id, name, email, password, zipcode, address, telephone ");
+		sql.append("SELECT id, name, email, password, zipcode, address, telephone, point ");
 		sql.append("FROM users WHERE id=:id;");
 		SqlParameterSource param = new MapSqlParameterSource().addValue("id", id);
 		List<User> userList = template.query(sql.toString(), param, USER_ROW_MAPPER);
@@ -83,7 +84,7 @@ public class UserRepository {
 	 */
 	public User findByEmail(String email) {
 		StringBuilder sql = new StringBuilder();
-		sql.append("SELECT id, name, email, password, zipcode, address, telephone ");
+		sql.append("SELECT id, name, email, password, zipcode, address, telephone, point ");
 		sql.append("FROM users WHERE email=:email;");
 		SqlParameterSource param = new MapSqlParameterSource().addValue("email", email);
 		List<User> userList = template.query(sql.toString(), param, USER_ROW_MAPPER);
@@ -104,7 +105,7 @@ public class UserRepository {
 	 */
 	public User findByEmailAndPassword(String email, String password) {
 		StringBuilder sql = new StringBuilder();
-		sql.append("SELECT id, name, email, password, zipcode, address, telephone ");
+		sql.append("SELECT id, name, email, password, zipcode, address, telephone, point ");
 		sql.append("FROM users WHERE email=:email AND password=:password;");
 		SqlParameterSource param = new MapSqlParameterSource().addValue("email", email).addValue("password", password);
 		List<User> userList = template.query(sql.toString(), param, USER_ROW_MAPPER);
@@ -113,6 +114,19 @@ public class UserRepository {
 		} else {
 			return null;
 		}
+	}
+
+
+	/**
+	 * 更新処理をします.
+	 * 
+	 * @param user userオブジェクト
+	 */
+	public void updatePoint(User user) {
+		StringBuilder sql = new StringBuilder();
+		sql.append("UPDATE users SET point=:point WHERE id=:id;");
+		SqlParameterSource param = new MapSqlParameterSource().addValue("point", user.getPoint()).addValue("id", user.getId());
+		template.update(sql.toString(), param);
 	}
 
 }

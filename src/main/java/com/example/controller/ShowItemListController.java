@@ -53,13 +53,17 @@ public class ShowItemListController {
 
 		//並び替え
 		if (form.getElement() != null && !"".equals(form.getElement())) {
+			System.out.println("並び替え処理:"+form);
 			itemList = showItemListService.findByPrice(form);
 		}
 
 		//トップ画面表示 to 商品検索
 		if (form.getElement() == null && searchName == null || searchName != null) {
 			itemList = showItemListService.findAll(searchName);
-		} else {
+		}
+		
+		//itemListがnullだったら全件検索
+		if (itemList == null) {
 			itemList = showItemListService.findAll(searchName);
 		}
 
@@ -107,7 +111,7 @@ public class ShowItemListController {
 	 * 
 	 * @param model    リクエストスコープ
 	 * @param itemPage ページング情報
-	 * @return
+	 * @return         1ページ分の商品情報
 	 */
 	private List<Integer> calcPageNumbers(Model model, Page<Item> itemPage) {
 		int totalPages = itemPage.getTotalPages();

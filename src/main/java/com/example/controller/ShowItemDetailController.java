@@ -34,9 +34,9 @@ public class ShowItemDetailController {
 	/**
 	 * 商品詳細情報を出力します.
 	 * 
-	 * @param itemId    商品ID
-	 * @param model リクエストスコープ
-	 * @return      商品詳細画面
+	 * @param itemId 商品ID
+	 * @param model  リクエストスコープ
+	 * @return       商品詳細画面
 	 */
 	@RequestMapping("/showDetail")
 	public String index(String itemId, Model model) {

@@ -45,7 +45,7 @@ public class OrderRepository {
 
 
 	/**
-	 * 注文情報を取得するリザルトセットエクストラクター
+	 * 注文情報を取得するリザルトセットエクストラクター.
 	 */
 	@SuppressWarnings("unused")
 	private static final ResultSetExtractor<Order> ORDER_RESULT_SET_EXTRACTOR = (rs) -> {
@@ -219,7 +219,7 @@ public class OrderRepository {
 	 * 注文情報を取得します.
 	 * 
 	 * @param userId 注文ID
-	 * @return 注文情報
+	 * @return       注文情報
 	 */
 	public Order findByUserId2(Integer userId) {
 		StringBuilder sql = new StringBuilder();

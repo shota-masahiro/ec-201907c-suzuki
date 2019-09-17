@@ -1,11 +1,8 @@
 package com.example.form;
 
-import java.security.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
-
-import javax.validation.constraints.NotBlank;
 
 /**
  * 注文情報を受け取るフォーム.

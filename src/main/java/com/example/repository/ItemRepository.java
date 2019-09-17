@@ -102,20 +102,9 @@ public class ItemRepository {
 		sql.append("SELECT id, name, description, price_m, price_l, image_path, deleted ");
 		sql.append("FROM items ORDER BY ");
 		sql.append(" "+ size +" ");
-		sql.append(" "+ price +" ");
+		sql.append(price +";");
 		List<Item> itemList = template.query(sql.toString(), ITEM_ROW_MAPPER);
 		return itemList;
 	}
-
-
-
-
-
-
-
-
-
-
-
 
 }

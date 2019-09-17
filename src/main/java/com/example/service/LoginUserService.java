@@ -30,6 +30,9 @@ public class LoginUserService implements UserDetailsService {
 	private UserRepository userRepository;
 	
 	
+	/**
+	 * ユーザ情報を取得します.
+	 */
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		User user = userRepository.findByEmail(email);

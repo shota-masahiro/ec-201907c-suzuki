@@ -171,8 +171,8 @@ public class ExecuteShoppingCartService {
 	/**
 	 * 更新処理をします.
 	 * 
-	 * @param orderId    ユーザID
-	 * @param userId tokenID
+	 * @param orderId 注文情報ID
+	 * @param userId  tokenID
 	 */
 	public void update2(Integer orderId, Integer userId) {
 		orderRepository.update2(orderId, userId);

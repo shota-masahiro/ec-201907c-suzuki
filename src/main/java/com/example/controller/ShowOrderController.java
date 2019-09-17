@@ -42,6 +42,7 @@ public class ShowOrderController {
 	@Autowired
 	private SendMailService sendMailService;
 
+	private final static double calcPoint = 0.05;
 
 	@Autowired
 	private OrderItemForm setUpOrderItemForm() {
@@ -102,13 +103,15 @@ public class ShowOrderController {
 	@RequestMapping("/toOrder")
 	public String toOrder(
 			OrderItemForm form,
-			Model model) {
+			Model model,
+			@AuthenticationPrincipal LoginUser loginUser) {
 
 		//送信メールの準備
 		Context context = new Context();
 
 		//User情報の取得
 		Order order = executeShoppingCartService.findByOrderId(form.getIntOrderId());
+		User user = registerUserService.load(order.getUserId());
 
 		//ユーザー名をsetする
 		context.setVariable("user_name", form.getDestinationName());
@@ -141,6 +144,32 @@ public class ShowOrderController {
 		//メール送信処理
 		sendMailService.sendMail(context, form.getDestinationEmail());
 
+		//ポイント使用のエラーチェック
+		if (form.getUsePoint() != "") {
+			if (form.getIntegerUsePoint() > user.getPoint()) {
+				return index(form.getOrderId(), loginUser, model);
+			}
+		}
+
+		//付与するポイントの計算処理
+		int newPoint = (int)(order.getCalcPrice() * calcPoint);
+		
+		System.out.println("newPoint:"+ newPoint);
+		System.out.println("form:" + form);
+		System.out.println("user:" + user);
+		
+
+		//ポイントを使用したときの処理
+		if (form.isCheckPoint()) {
+			//ポイント使用はユーザのポイントを減算する
+			user.setPoint(user.getPoint() - form.getIntegerUsePoint());
+			form.setTotalPrice(String.valueOf(form.getIntTotalPrice() - form.getIntegerUsePoint()));
+		} else {
+			//ポイントを使用しない場合はポイントを加算する
+			user.setPoint(user.getPoint() + newPoint);
+		}
+
+		registerUserService.updatePoint(user);
 		executeShoppingCartService.update(form);
 
 		return "order_finished";
