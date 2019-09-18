@@ -43,13 +43,13 @@
 				
 				<div th:each="review:${reviewList}">
 					<div>
+						評価:<span th:text="${review.review}"></span>
+					</div>
+					<div>
 						名前:<span th:text="${review.name}"></span>
 					</div>
 					<div>
 						コメント:<span th:text="${review.content}"></span>
-					</div>
-					<div>
-						評価:<span th:text="${review.review}"></span>
 					</div>
 					<hr>
 				</div>

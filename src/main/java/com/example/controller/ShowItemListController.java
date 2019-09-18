@@ -61,7 +61,7 @@ public class ShowItemListController {
 		if (form.getElement() == null && searchName == null || searchName != null) {
 			itemList = showItemListService.findAll(searchName);
 		}
-		
+
 		//itemListがnullだったら全件検索
 		if (itemList == null) {
 			itemList = showItemListService.findAll(searchName);

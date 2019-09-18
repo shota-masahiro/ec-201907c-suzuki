@@ -5,6 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.SecurityConfig;
 import com.example.domain.User;
 import com.example.form.LoginUserForm;
 import com.example.form.RegisterUserForm;
@@ -26,6 +27,12 @@ public class RegisterUserService {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
+	@Autowired
+	private SecurityConfig securityConfig;
+
+	private static String secret = "1234";
+	private static String salt = "5678";
+
 
 	/**
 	 * user情報の挿入をします.
@@ -33,6 +40,7 @@ public class RegisterUserService {
 	 * @param user userオブジェクト
 	 */
 	public void insert(User user) {
+		user.setAddress(securityConfig.encryptText(secret, salt, user.getAddress()));
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		user.setPoint(0);
 		userRepository.insert(user);
@@ -46,7 +54,9 @@ public class RegisterUserService {
 	 * @return   userオブジェクト
 	 */
 	public User load(Integer id) {
-		return userRepository.load(id);
+		User user = userRepository.load(id);
+		user.setAddress(securityConfig.decryptText(secret, salt, user.getAddress()));
+		return user;
 	}
 
 
@@ -68,7 +78,9 @@ public class RegisterUserService {
 	 * @return     userオブジェクト
 	 */
 	public User findByEmailAndPassword(LoginUserForm form) {
-		return userRepository.findByEmailAndPassword(form.getEmail(), form.getPassword());
+		User user = userRepository.findByEmailAndPassword(form.getEmail(), form.getPassword());
+		user.setAddress(securityConfig.decryptText(secret, salt, user.getAddress()));
+		return user;
 	}
 
 
@@ -79,6 +91,17 @@ public class RegisterUserService {
 	 */
 	public void updatePoint(User user) {
 		userRepository.updatePoint(user);
+	}
+
+
+	/**
+	 * 更新処理をします.
+	 * 
+	 * @param user userオブジェクト
+	 */
+	public void updateUser(User user) {
+		user.setAddress(securityConfig.encryptText(secret, salt, user.getAddress()));
+		userRepository.updateUser(user);
 	}
 
 }

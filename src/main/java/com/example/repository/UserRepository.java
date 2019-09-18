@@ -129,4 +129,19 @@ public class UserRepository {
 		template.update(sql.toString(), param);
 	}
 
+
+	/**
+	 * 更新処理をします.
+	 * 
+	 * @param user userオブジェクト
+	 */
+	public void updateUser(User user) {
+		StringBuilder sql = new StringBuilder();
+		sql.append("UPDATE users ");
+		sql.append("SET email=:email, zipcode=:zipcode, address=:address, telephone=:telephone ");
+		sql.append("WHERE id=:id;");
+		SqlParameterSource param = new BeanPropertySqlParameterSource(user);
+		template.update(sql.toString(), param);
+	}
+
 }

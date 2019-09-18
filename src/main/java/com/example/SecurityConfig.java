@@ -10,6 +10,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.encrypt.Encryptors;
+import org.springframework.security.crypto.encrypt.TextEncryptor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -102,6 +104,34 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
+	}
+	
+	
+	/**
+	 * 複合化を行います.
+	 * 
+	 * @param secret
+	 * @param salt
+	 * @param plainText
+	 * @return 複合化したテキスト
+	 */
+	public String encryptText(String secret, String salt, String plainText) {
+		TextEncryptor encrypt = Encryptors.text(secret, salt);
+		return encrypt.encrypt(plainText);
+	}
+	
+	
+	/**
+	 * 暗号化を行います.
+	 * 
+	 * @param secret
+	 * @param salt
+	 * @param cipherText
+	 * @return 暗号化したテキスト
+	 */
+	public String decryptText(String secret, String salt, String cipherText) {
+		TextEncryptor decrypt = Encryptors.text(secret, salt);
+		return decrypt.decrypt(cipherText);
 	}
 
 }

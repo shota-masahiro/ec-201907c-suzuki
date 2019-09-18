@@ -153,11 +153,6 @@ public class ShowOrderController {
 
 		//付与するポイントの計算処理
 		int newPoint = (int)(order.getCalcPrice() * calcPoint);
-		
-		System.out.println("newPoint:"+ newPoint);
-		System.out.println("form:" + form);
-		System.out.println("user:" + user);
-		
 
 		//ポイントを使用したときの処理
 		if (form.isCheckPoint()) {

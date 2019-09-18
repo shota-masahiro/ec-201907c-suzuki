@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.domain.LoginUser;
 import com.example.domain.Order;
@@ -45,6 +46,7 @@ public class ExecuteShoppingCartController {
 	 * @param model   リクエストスコープ
 	 * @return        ショッピングカート画面
 	 */
+	@RequestMapping("")
 	public String index(Integer orderId, Model model) {
 		if (orderId == null || orderId == 0) {
 			return "cart_list";
