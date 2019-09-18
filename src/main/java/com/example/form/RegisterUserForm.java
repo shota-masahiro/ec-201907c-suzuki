@@ -2,6 +2,7 @@ package com.example.form;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 /**
@@ -31,10 +32,12 @@ public class RegisterUserForm {
 	
 	/** 電話番号 */
 	@NotBlank(message = "電話番号を入力してください")
+	@Pattern(regexp = "^[0-9]+$", message = "数値で入力してください")
 	private String telephone;
 	
 	/** パスワード */
 	@NotBlank(message = "パスワードを入力してください")
+	@Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,32}$", message = "パスワードは8文字以上32文字以内かつ小・大文字、数字を1つ以上入力してください")
 	private String password;
 	
 	/** 確認用パスワード */
