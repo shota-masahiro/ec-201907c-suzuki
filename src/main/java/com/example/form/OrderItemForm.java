@@ -54,6 +54,61 @@ public class OrderItemForm {
 	/** 使用ポイント */
 	private String usePoint;
 
+	/** クレジットカード番号 */
+	private String cardNumber;
+
+	/** 有効期限(月) */
+	private String cardExpMonth;
+
+	/** 有効期限(年) */
+	private String cardExpYear;
+
+	/** カード名義人 */
+	private String cardName;
+
+	/** セキュリティコード */
+	private String cardCvv;
+
+
+	public String getCardNumber() {
+		return cardNumber;
+	}
+	public void setCardNumber(String cardNumber) {
+		this.cardNumber = cardNumber;
+	}
+
+
+	public String getCardExpMonth() {
+		return cardExpMonth;
+	}
+	public void setCardExpMonth(String cardExpMonth) {
+		this.cardExpMonth = cardExpMonth;
+	}
+
+
+	public String getCardExpYear() {
+		return cardExpYear;
+	}
+	public void setCardExpYear(String cardExpYear) {
+		this.cardExpYear = cardExpYear;
+	}
+
+
+	public String getCardName() {
+		return cardName;
+	}
+	public void setCardName(String cardName) {
+		this.cardName = cardName;
+	}
+
+
+	public String getCardCvv() {
+		return cardCvv;
+	}
+	public void setCardCvv(String cardCvv) {
+		this.cardCvv = cardCvv;
+	}
+
 
 	public java.sql.Timestamp getTimestampDeliveryDayTime() {
 		String DayTime = deliveryDay + "-" + deliveryTime;
@@ -198,7 +253,9 @@ public class OrderItemForm {
 				+ ", destinationAddress=" + destinationAddress + ", destinationTel=" + destinationTel
 				+ ", deliveryDayTime=" + deliveryDayTime + ", paymentMethod=" + paymentMethod + ", totalPrice="
 				+ totalPrice + ", deliveryDay=" + deliveryDay + ", deliveryTime=" + deliveryTime + ", checkPoint="
-				+ checkPoint + ", usePoint=" + usePoint + "]";
+				+ checkPoint + ", usePoint=" + usePoint + ", cardNumber=" + cardNumber + ", cardExpMonth="
+				+ cardExpMonth + ", cardExpYear=" + cardExpYear + ", cardName=" + cardName + ", cardCvv=" + cardCvv
+				+ "]";
 	}
 
 }

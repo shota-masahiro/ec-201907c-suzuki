@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.thymeleaf.context.Context;
 
@@ -17,9 +18,12 @@ import com.example.domain.Item;
 import com.example.domain.LoginUser;
 import com.example.domain.Order;
 import com.example.domain.OrderItem;
+import com.example.domain.ResponseCreditCardPaymentApiDomain;
 import com.example.domain.User;
 import com.example.enums.PaymentMethod;
+import com.example.form.CreditCardPaymentForm;
 import com.example.form.OrderItemForm;
+import com.example.service.CreditCardPaymentApiCallService;
 import com.example.service.ExecuteShoppingCartService;
 import com.example.service.RegisterUserService;
 
@@ -42,12 +46,18 @@ public class ShowOrderController {
 	@Autowired
 	private SendMailService sendMailService;
 
-	private final static double calcPoint = 0.05;
+	@Autowired
+	private CreditCardPaymentApiCallService creditCardPaymentApiCallService;
 
 	@Autowired
+	private CreditCardWebApiServerController creditCardWebApiServerController;
+
+	@ModelAttribute
 	private OrderItemForm setUpOrderItemForm() {
 		return new OrderItemForm();
 	}
+
+	private final static double calcPoint = 0.05;
 
 	/**
 	 * 注文確認画面を表示します.
@@ -65,6 +75,7 @@ public class ShowOrderController {
 			return "forward:/showItemList";
 		}
 
+		// 日時のmap
 		List<List<Integer>> timeAllList = new ArrayList<>();
 		List<Integer> time3List = new ArrayList<>();
 		for (int i = 10; i <= 18; i++) {
@@ -76,11 +87,32 @@ public class ShowOrderController {
 		}
 		model.addAttribute("timeAllList", timeAllList);
 
+		// 支払方法のmap
 		Map<Integer, String> paymentMap = new LinkedHashMap<>();
 		for (PaymentMethod paymentMethod : PaymentMethod.values()) {
 			paymentMap.put(paymentMethod.getKey(), paymentMethod.getValue());
 		}
 		model.addAttribute("paymentMap", paymentMap);
+
+		//有効期限(月)のmap
+		Map<String, String> monthMap = new LinkedHashMap<>();
+		String month = "";
+		for (int i = 1; i <= 12; i++) {
+			if (i < 10) {
+				month = "0" + i;
+			} else {
+				month = String.valueOf(i);
+			}
+			monthMap.put(month, month);
+		}
+		model.addAttribute("monthMap", monthMap);
+
+		//有効期限(年)のyear
+		Map<Integer, Integer> yearMap = new LinkedHashMap<>();
+		for (int i = 2018; i <= 2038; i++) {
+			yearMap.put(i, i);
+		}
+		model.addAttribute("yearMap", yearMap);
 
 		User user = registerUserService.load(loginUser.getUser().getId());
 		model.addAttribute("user", user);
@@ -90,7 +122,6 @@ public class ShowOrderController {
 
 		return "order_confirm";
 	}
-
 
 
 	/**
@@ -105,6 +136,18 @@ public class ShowOrderController {
 			OrderItemForm form,
 			Model model,
 			@AuthenticationPrincipal LoginUser loginUser) {
+
+		//クレジットカード決済処理
+		if ("2".equals(form.getPaymentMethod())) {
+
+			CreditCardPaymentForm creditCardPaymentForm = createCreditCardPaymentForm(form, loginUser);
+			ResponseCreditCardPaymentApiDomain responseCreditCardPaymentApiDomain = creditCardPaymentApiCallService.paymentApiService(creditCardPaymentForm);
+
+			//エラーチェック
+			if ("error".equals(responseCreditCardPaymentApiDomain.getStatus())) {
+				return index(form.getOrderId(), loginUser, model);
+			}
+		}
 
 		//送信メールの準備
 		Context context = new Context();
@@ -168,6 +211,28 @@ public class ShowOrderController {
 		executeShoppingCartService.update(form);
 
 		return "order_finished";
+	}
+
+
+	/**
+	 * クレジットカード情報をDomainに移し替えます.
+	 * 
+	 * @param form      リクエストパラメータ
+	 * @param loginUser ログインユーザ情報
+	 * @return          クレジットカード情報
+	 */
+	private CreditCardPaymentForm createCreditCardPaymentForm(OrderItemForm form, LoginUser loginUser) {
+		CreditCardPaymentForm creditCardPaymentForm = new CreditCardPaymentForm();
+		creditCardPaymentForm.setUser_id(String.valueOf(loginUser.getUser().getId()));
+		creditCardPaymentForm.setOrder_number(form.getOrderId());
+		creditCardPaymentForm.setAmount(form.getTotalPrice());
+		creditCardPaymentForm.setPaymentMethod(form.getPaymentMethod());
+		creditCardPaymentForm.setCard_number(form.getCardNumber());
+		creditCardPaymentForm.setCard_exp_year(form.getCardExpYear());
+		creditCardPaymentForm.setCard_exp_month(form.getCardExpMonth());
+		creditCardPaymentForm.setCard_name(form.getCardName());
+		creditCardPaymentForm.setCard_cvv(form.getCardCvv());
+		return creditCardPaymentForm;
 	}
 
 }
