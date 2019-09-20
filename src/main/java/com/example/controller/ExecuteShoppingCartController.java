@@ -102,7 +102,7 @@ public class ExecuteShoppingCartController {
 			if (preOrderId == null) { //カートに商品を入れる1回目の処理
 				Random rnd = new Random();
 				Integer token = rnd.nextInt(10000);
-				form.setUserId(String.valueOf(token));
+				form.setUserId(String.valueOf(-token));
 			} else { //カートに商品を入れる2回目の処理
 				form.setUserId(String.valueOf(preUserId));
 			}

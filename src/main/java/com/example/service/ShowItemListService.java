@@ -53,6 +53,16 @@ public class ShowItemListService {
 	public List<Item> findByPrice(ShowItemListForm form) {
 		return itemRepository.findByPrice(form.getElement(), form.getOrder());
 	}
+	
+	
+	/**
+	 * 人気商品の上位5件を取得します.
+	 * 
+	 * @return 商品情報一覧
+	 */
+	public List<Item> findByRanking() {
+		return itemRepository.findByRanking();
+	}
 
 
 	/**

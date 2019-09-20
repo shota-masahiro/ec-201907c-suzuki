@@ -270,7 +270,7 @@
 									<div class="row">
 										<div class="col-sm-12">
 											<label class="radio-inline">
-												<input type="radio" name="paymentMethod" th:value="${payment.key}" th:checked="${payment.key == 1}" th:text="${payment.value}">
+												<input type="radio" name="paymentMethod" th:value="${payment.key}" th:checked="${payment.key == 1}" onchange="sample(this);" th:text="${payment.value}">
 											</label>
 										</div>
 									</div>
@@ -282,7 +282,7 @@
 			</div>
 			
 			<!-- クレジットカード決済 -->
-			<div class="row">
+			<div class="row" id="credit">
 				<div class="table-responsive col-lg-offset-3 col-lg-6 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
 					<h3 class="text-center">クレジットカード決済</h3>
 					<table class="table table-striped">

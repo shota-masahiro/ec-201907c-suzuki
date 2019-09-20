@@ -124,5 +124,20 @@ public class ShowItemListController {
 		}
 		return pageNumbers;
 	}
+	
+	
+	/**
+	 * 人気ランキング画面を出力します.
+	 * 
+	 * @param model リクエストスコープ
+	 * @return      人気ランキング画面
+	 */
+	@RequestMapping("/ranking")
+	public String showItemListByRanking(Model model) {
+		List<Item> itemList = showItemListService.findByRanking();
+		model.addAttribute("itemList", itemList);
+		System.out.println(itemList);
+		return "item_rank";
+	}
 
 }

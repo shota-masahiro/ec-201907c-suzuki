@@ -38,6 +38,22 @@ public class ItemRepository {
 		item.setDeleted(rs.getBoolean("deleted"));
 		return item;
 	};
+	
+	
+	/**
+	 * Itemオブジェクトを生成するテーブル結合版ローマッパー.
+	 */
+	private static final RowMapper<Item> ITEM_ROW_MAPPER2 = (rs, i) -> {
+		Item item = new Item();
+		item.setId(rs.getInt("i_id"));
+		item.setName(rs.getString("i_name"));
+		item.setDescription(rs.getString("i_description"));
+		item.setPriceM(rs.getInt("i_price_m"));
+		item.setPriceL(rs.getInt("i_price_l"));
+		item.setImagePath(rs.getString("i_image_path"));
+		item.setDeleted(rs.getBoolean("i_deleted"));
+		return item;
+	};
 
 
 	/**
@@ -105,6 +121,25 @@ public class ItemRepository {
 		sql.append(price +";");
 		List<Item> itemList = template.query(sql.toString(), ITEM_ROW_MAPPER);
 		return itemList;
+	}
+	
+	
+	/**
+	 * 人気商品の上位5件を取得します.
+	 * 
+	 * @return 商品情報一覧
+	 */
+	public List<Item> findByRanking() {
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT i.id i_id, i.name i_name, i.description i_description, i.price_m i_price_m, i.price_l i_price_l, i.image_path i_image_path, i.deleted i_deleted, ");
+		sql.append("count (*) AS count ");
+		sql.append("FROM orders o1 FULL OUTER JOIN order_items o2 ON o1.id=o2.order_id ");
+		sql.append("FULL OUTER JOIN items i ON o2.item_id=i.id ");
+		sql.append("where status=2 or status=3 ");
+		sql.append("GROUP BY i.id , i.name , i.description, i.price_m, i.price_l , i.image_path , i.deleted ");
+		sql.append("ORDER BY count DESC LIMIT 5;");
+		List<Item> orderList = template.query(sql.toString(), ITEM_ROW_MAPPER2);
+		return orderList;
 	}
 
 }

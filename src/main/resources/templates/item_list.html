@@ -39,7 +39,10 @@ $(function(){
 			<div class="col-lg-offset-3 col-lg-6 col-md-offset-2 col-md-8 col-sm-10 col-xs-12">
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						<div class="panel-title">商品を検索する</div>
+						<form th:action="@{/ranking}">
+							<div class="panel-title">商品を検索する</div>
+							<button class="button2">人気ランキング</button>
+						</form>
 					</div>
 					
 					<div class="panel-body">
