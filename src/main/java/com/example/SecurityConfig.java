@@ -58,9 +58,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		    		"/",
 		    		"/detail",
 		    		"/detail/showDetail",
-		    		"/executeShoppingCart/header",
 		    		"/executeShoppingCart/toInCart",
 		    		"/executeShoppingCart/delete",
+		    		"/executeShoppingCart/view",
 		    		"/review",
 		    		"/ranking",
 		    		"/test")

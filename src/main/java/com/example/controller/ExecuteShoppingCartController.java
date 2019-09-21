@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.domain.LoginUser;
 import com.example.domain.Order;
@@ -41,30 +42,12 @@ public class ExecuteShoppingCartController {
 	/**
 	 * ショッピングカート画面を出力します.
 	 * 
-	 * @param orderId 注文ID
-	 * @param model   リクエストスコープ
-	 * @return        ショッピングカート画面
-	 */
-	@RequestMapping("")
-	public String index(Integer orderId, Model model) {
-		if (orderId == null || orderId == 0) {
-			return "cart_list";
-		}
-		Order order = executeShoppingCartService.findByOrderId(orderId);
-		model.addAttribute("order", order);
-		return "cart_list";
-	}
-
-
-	/**
-	 * ショッピングカート画面を出力します.
-	 * 
 	 * @param loginUser ユーザ情報
 	 * @param model     リクエストスコープ
 	 * @return          ショッピングカート画面
 	 */
-	@RequestMapping("/header")
-	public String header(@AuthenticationPrincipal LoginUser loginUser, Model model) {
+	@RequestMapping("/view")
+	public String view(@AuthenticationPrincipal LoginUser loginUser, RedirectAttributes redirectAttributes, Model model) {
 		Integer preOrderId = (Integer) session.getAttribute("preOrderId");
 		Integer preUserId = (Integer) session.getAttribute("preUserId");
 		Order order = null;
@@ -92,7 +75,7 @@ public class ExecuteShoppingCartController {
 	 * @return      ショッピングカート画面
 	 */
 	@RequestMapping("/toInCart")
-	public String toInCart(ExecuteShoppingCartForm form, @AuthenticationPrincipal LoginUser loginUser, Model model) {
+	public String toInCart(ExecuteShoppingCartForm form, @AuthenticationPrincipal LoginUser loginUser, RedirectAttributes redirectAttributes) {
 		Integer preOrderId = (Integer) session.getAttribute("preOrderId");
 		Integer preUserId = (Integer) session.getAttribute("preUserId");
 		Order order = null;
@@ -100,9 +83,7 @@ public class ExecuteShoppingCartController {
 		if (loginUser == null) { //未ログイン時の処理
 
 			if (preOrderId == null) { //カートに商品を入れる1回目の処理
-				Random rnd = new Random();
-				Integer token = rnd.nextInt(10000);
-				form.setUserId(String.valueOf(-token));
+				form.setUserId(String.valueOf(createPreUserId()));
 			} else { //カートに商品を入れる2回目の処理
 				form.setUserId(String.valueOf(preUserId));
 			}
@@ -119,8 +100,20 @@ public class ExecuteShoppingCartController {
 			order = executeShoppingCartService.insert(form);
 		}
 
-		model.addAttribute("order", order);
-		return "cart_list";
+//		redirectAttributes.addFlashAttribute("orderId", order.getId());
+		return "redirect:/executeShoppingCart/view";
+	}
+
+
+	/**
+	 * 仮のuserIdを発行します.
+	 * 
+	 * @return 仮UserId
+	 */
+	private Integer createPreUserId() {
+		Random rnd = new Random();
+		Integer token = rnd.nextInt(10000);
+		return -token;
 	}
 
 
@@ -135,7 +128,7 @@ public class ExecuteShoppingCartController {
 	@RequestMapping("/delete")
 	public String delete(String orderId, String orderItemId, Model model) {
 		executeShoppingCartService.delete(Integer.parseInt(orderItemId));
-		return index(Integer.parseInt(orderId), model);
+		return "redirect:/executeShoppingCart/view";
 	}
 
 }
