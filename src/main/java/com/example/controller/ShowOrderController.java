@@ -26,6 +26,7 @@ import com.example.form.OrderItemForm;
 import com.example.service.CreditCardPaymentApiCallService;
 import com.example.service.ExecuteShoppingCartService;
 import com.example.service.RegisterUserService;
+import com.example.service.SendingMaiService;
 
 /**
  * 注文確認画面を表示します.
@@ -50,7 +51,7 @@ public class ShowOrderController {
 	private CreditCardPaymentApiCallService creditCardPaymentApiCallService;
 
 	@Autowired
-	private CreditCardWebApiServerController creditCardWebApiServerController;
+	private SendingMaiService SendingMaiService;
 
 	@ModelAttribute
 	private OrderItemForm setUpOrderItemForm() {
@@ -150,42 +151,11 @@ public class ShowOrderController {
 		}
 
 		//送信メールの準備
-		Context context = new Context();
+		SendingMaiService.run(form);
 
 		//User情報の取得
 		Order order = executeShoppingCartService.findByOrderId(form.getIntOrderId());
 		User user = registerUserService.load(order.getUserId());
-
-		//ユーザー名をsetする
-		context.setVariable("user_name", form.getDestinationName());
-
-		//商品名を格納
-		List<OrderItem> orderItemList = order.getOrderItemList();
-		List<Item> itemList = new ArrayList<>();
-		for (OrderItem orderItem : orderItemList) {
-			itemList.add(orderItem.getItem());
-		}
-		List<String> nameList = new ArrayList<>();
-		for (Item item : itemList) {
-			nameList.add(item.getName());
-		}
-		context.setVariable("name_list", nameList);
-
-		//金額を格納
-		context.setVariable("total_price", order.getTotalPrice());
-
-		//支払方法を格納
-		if (order.getPaymentMethod().equals(1)) {
-			context.setVariable("paymentMethod", "代金引換");
-		} else if (order.getPaymentMethod().equals(2)) {
-			context.setVariable("paymentMethod", "クレジットカード");
-		}
-
-		//配達日を格納
-		context.setVariable("delivery_time", order.getDeliveryTime());
-
-		//メール送信処理
-		sendMailService.sendMail(context, form.getDestinationEmail());
 
 		//ポイント使用のエラーチェック
 		if (form.getUsePoint() != "") {
