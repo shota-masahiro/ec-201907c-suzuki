@@ -11,13 +11,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.thymeleaf.context.Context;
 
-import com.example.common.SendMailService;
-import com.example.domain.Item;
 import com.example.domain.LoginUser;
 import com.example.domain.Order;
-import com.example.domain.OrderItem;
 import com.example.domain.ResponseCreditCardPaymentApiDomain;
 import com.example.domain.User;
 import com.example.enums.PaymentMethod;
@@ -43,9 +39,6 @@ public class ShowOrderController {
 
 	@Autowired
 	private RegisterUserService registerUserService;
-
-	@Autowired
-	private SendMailService sendMailService;
 
 	@Autowired
 	private CreditCardPaymentApiCallService creditCardPaymentApiCallService;
