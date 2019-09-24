@@ -11,6 +11,7 @@
 	<groupId>com.example</groupId>
 	<artifactId>ec-201907c-suzuki</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
 	<name>ec-201907c-suzuki</name>
 	<description>Demo project for Spring Boot</description>
 
@@ -70,6 +71,13 @@
 		<dependency>
 			<groupId>org.thymeleaf.extras</groupId>
 			<artifactId>thymeleaf-extras-springsecurity5</artifactId>
+		</dependency>
+		
+		<!-- 変更2. jarの依存関係を追加する -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 
