@@ -32,6 +32,5 @@ public class Ec201907cSuzukiApplication extends SpringBootServletInitializer {
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
 		return application.sources(Ec201907cSuzukiApplication.class);
 	}
-	
 
 }

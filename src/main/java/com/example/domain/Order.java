@@ -1,5 +1,6 @@
 package com.example.domain;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -10,48 +11,51 @@ import java.util.List;
  *
  */
 public class Order {
-	
+
 	/** 注文ID */
 	private Integer id;
-	
+
 	/** ユーザID */
 	private Integer userId;
-	
+
 	/** 状態 */
 	private Integer status;
-	
+
 	/** 合計金額 */
 	private Integer totalPrice;
-	
+
 	/** 注文日 */
 	private Date orderDate;
-	
+
 	/** 宛先氏名 */
 	private String destinationName;
-	
+
 	/** 宛先Eメール */
 	private String destinationEmail;
-	
+
 	/** 宛先郵便番号 */
 	private String destinationZipcode;
-	
+
 	/** 宛先住所 */
 	private String destinationAddress;
-	
+
 	/** 宛先TEL */
 	private String destinationTel;
-	
+
 	/** 配達時間 */
 	private java.sql.Timestamp deliveryTime;
-	
+
 	/** 支払方法 */
 	private Integer paymentMethod;
-	
+
 	/** ユーザ */
 	private User user;
-	
+
 	/** 注文商品リスト */
 	private List<OrderItem> orderItemList;
+
+	/** 注文番号 */
+	private String orderNumber;
 
 
 	public Order() {
@@ -61,7 +65,8 @@ public class Order {
 
 	public Order(Integer id, Integer userId, Integer status, Integer totalPrice, Date orderDate, String destinationName,
 			String destinationEmail, String destinationZipcode, String destinationAddress, String destinationTel,
-			java.sql.Timestamp deliveryTime, Integer paymentMethod, User user, List<OrderItem> orderItemList) {
+			Timestamp deliveryTime, Integer paymentMethod, User user, List<OrderItem> orderItemList,
+			String orderNumber) {
 		this.id = id;
 		this.userId = userId;
 		this.status = status;
@@ -76,8 +81,12 @@ public class Order {
 		this.paymentMethod = paymentMethod;
 		this.user = user;
 		this.orderItemList = orderItemList;
+		this.orderNumber = orderNumber;
 	}
-	
+
+
+
+
 	/**
 	 * ショッピングカート内の消費税を求めます.
 	 * 
@@ -105,7 +114,7 @@ public class Order {
 	public int getCalcTotalPrice() {
 		return getCalcPrice() + getTax();
 	}
-	
+
 
 	public Integer getId() {
 		return id;
@@ -219,13 +228,22 @@ public class Order {
 	}
 
 
+	public String getOrderNumber() {
+		return orderNumber;
+	}
+	public void setOrderNumber(String orderNumber) {
+		this.orderNumber = orderNumber;
+	}
+
+
 	@Override
 	public String toString() {
 		return "Order [id=" + id + ", userId=" + userId + ", status=" + status + ", totalPrice=" + totalPrice
 				+ ", orderDate=" + orderDate + ", destinationName=" + destinationName + ", destinationEmail="
 				+ destinationEmail + ", destinationZipcode=" + destinationZipcode + ", destinationAddress="
 				+ destinationAddress + ", destinationTel=" + destinationTel + ", deliveryTime=" + deliveryTime
-				+ ", paymentMethod=" + paymentMethod + ", user=" + user + ", orderItemList=" + orderItemList + "]";
+				+ ", paymentMethod=" + paymentMethod + ", user=" + user + ", orderItemList=" + orderItemList
+				+ ", orderNumber=" + orderNumber + "]";
 	}
 
 }

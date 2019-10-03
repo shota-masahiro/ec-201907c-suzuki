@@ -1,5 +1,6 @@
 package com.example.service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -154,6 +155,11 @@ public class ExecuteShoppingCartService {
 		BeanUtils.copyProperties(form, order);
 		Date date = new Date();
 		order.setOrderDate(date);
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		StringBuilder orderNumber = new StringBuilder(sdf.format(date));
+		orderNumber.append(orderRepository.getOrderNumber());
+		
 		if (PaymentMethod.CASHONDELIVERY.getKey().equals(form.getPaymentMethod())) {
 			order.setStatus(1);
 		} else if (PaymentMethod.CREDITCARD.getKey().equals(form.getPaymentMethod())) {
@@ -161,9 +167,11 @@ public class ExecuteShoppingCartService {
 		} else {
 			order.setStatus(3);
 		}
+		
 		order.setDeliveryTime(form.getTimestampDeliveryDayTime());
 		order.setPaymentMethod(form.getIntePaymentMethod());
 		order.setTotalPrice(form.getIntTotalPrice());
+		order.setOrderNumber(orderNumber.toString());
 		orderRepository.update(order);
 	}
 

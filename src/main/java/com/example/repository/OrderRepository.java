@@ -263,7 +263,7 @@ public class OrderRepository {
 	public void update(Order order) {
 		StringBuilder sql = new StringBuilder();
 		sql.append("UPDATE orders ");
-		sql.append("SET status=:status, order_date=:orderDate, total_price=:totalPrice, destination_name=:destinationName, destination_email=:destinationEmail, destination_zipcode=:destinationZipcode, destination_address=:destinationAddress, destination_tel=:destinationTel, delivery_time=:deliveryTime, payment_method=:paymentMethod ");
+		sql.append("SET status=:status, order_date=:orderDate, total_price=:totalPrice, destination_name=:destinationName, destination_email=:destinationEmail, destination_zipcode=:destinationZipcode, destination_address=:destinationAddress, destination_tel=:destinationTel, delivery_time=:deliveryTime, payment_method=:paymentMethod, order_number=:orderNumber ");
 		sql.append("WHERE id=:id;");
 		SqlParameterSource param = new BeanPropertySqlParameterSource(order);
 		template.update(sql.toString(), param);
@@ -284,6 +284,19 @@ public class OrderRepository {
 		sql.append("WHERE id=:orderId;");
 		SqlParameterSource param = new MapSqlParameterSource().addValue("orderId", orderId).addValue("userId", userId);
 		template.update(sql.toString(), param);
+	}
+	
+	
+	/**
+	 * 注文番号を取得します.
+	 * 
+	 * @return 注文番号
+	 */
+	public String getOrderNumber() {
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT to_char(nextval('customer_code_seq'), 'FM00000');");
+		SqlParameterSource param = new MapSqlParameterSource();
+		return template.queryForObject(sql.toString(), param, String.class);
 	}
 
 }
