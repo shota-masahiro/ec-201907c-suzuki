@@ -42,6 +42,89 @@ public class OrderRepository {
 		SimpleJdbcInsert withTableName = simpleJdbcInsert.withTableName("orders");
 		insert = withTableName.usingGeneratedKeyColumns("id");
 	}
+	
+	/**
+	 * 注文情報を取得するリザルトセットエクストラクター.
+	 */
+	@SuppressWarnings("unused")
+	private static final ResultSetExtractor<List<Order>> ORDER_RESULT_SET_EXTRACTOR2 = (rs) -> {
+		List<Order> orderList = new ArrayList<>();
+		
+		List<OrderItem> orderItemList = new ArrayList<>();
+		List<OrderTopping> orderToppingList = null;
+
+		int preOrderId = -1;
+		int preOrderItemId = -1;
+		int preOrderToppingId = -1;
+
+		while (rs.next()) {
+
+			Integer orderId = rs.getInt("o1_id");
+			if (preOrderId != orderId || orderId != null) {
+				Order order = new Order();
+				order.setOrderItemList(orderItemList);
+				order.setId(rs.getInt("o1_id"));
+				order.setUserId(rs.getInt("o1_user_id"));
+				order.setStatus(rs.getInt("o1_status"));
+				order.setTotalPrice(rs.getInt("o1_total_price"));
+				order.setOrderDate(rs.getDate("o1_order_date"));
+				order.setDestinationName(rs.getString("o1_destination_name"));
+				order.setDestinationEmail(rs.getString("o1_destination_email"));
+				order.setDestinationZipcode(rs.getString("o1_destination_zipcode"));
+				order.setDestinationAddress(rs.getString("o1_destination_address"));
+				order.setDestinationTel(rs.getString("o1_destination_tel"));
+				order.setDeliveryTime(rs.getTimestamp("o1_delivery_time"));
+				order.setPaymentMethod(rs.getInt("o1_payment_method"));
+				order.setOrderNumber(rs.getString("o1_order_number"));
+				orderList.add(order);
+			}
+			preOrderId = orderId;
+
+			int orderItemId = rs.getInt("o2_id");
+			if (orderItemId != preOrderItemId && orderItemId != 0) {
+				OrderItem orderItem = new OrderItem();
+				orderItem.setId(rs.getInt("o2_id"));
+				orderItem.setItemId(rs.getInt("o2_item_id"));
+				orderItem.setOrderId(rs.getInt("o2_order_id"));
+				orderItem.setQuantity(rs.getInt("o2_quantity"));
+				String ch = rs.getString("o2_size");
+				orderItem.setSize(ch.charAt(0));
+
+				Item item = new Item();
+				item.setId(rs.getInt("i_id"));
+				item.setName(rs.getString("i_name"));
+				item.setDescription(rs.getString("i_description"));
+				item.setPriceM(rs.getInt("i_price_m"));
+				item.setPriceL(rs.getInt("i_price_l"));
+				item.setImagePath(rs.getString("i_image_path"));
+				item.setDeleted(rs.getBoolean("i_deleted"));
+
+				orderItem.setItem(item);
+				orderToppingList = new ArrayList<>();
+				orderItem.setOrderToppingList(orderToppingList);
+				orderItemList.add(orderItem);
+			}
+			preOrderItemId = orderItemId;
+
+			int orderToppingId = rs.getInt("o3_id");
+			if (orderToppingId != preOrderToppingId && orderToppingId != 0) {
+				OrderTopping orderTopping = new OrderTopping();
+				orderTopping.setId(rs.getInt("o3_id"));
+				orderTopping.setToppingId(rs.getInt("o3_topping_id"));
+				orderTopping.setOrderItemId(rs.getInt("o3_order_item_id"));
+
+				Topping topping = new Topping();
+				topping.setId(rs.getInt("t_id"));
+				topping.setName(rs.getString("t_name"));
+				topping.setPriceM(rs.getInt("t_price_m"));
+				topping.setPriceL(rs.getInt("t_price_l"));
+				orderTopping.setTopping(topping);
+				orderToppingList.add(orderTopping);
+			}
+			preOrderToppingId = orderToppingId;
+		}
+		return orderList;
+	};
 
 
 	/**
@@ -75,6 +158,7 @@ public class OrderRepository {
 				order.setDestinationTel(rs.getString("o1_destination_tel"));
 				order.setDeliveryTime(rs.getTimestamp("o1_delivery_time"));
 				order.setPaymentMethod(rs.getInt("o1_payment_method"));
+				order.setOrderNumber(rs.getString("o1_order_number"));
 			}
 			preOrderId = orderId;
 
@@ -142,8 +226,35 @@ public class OrderRepository {
 		order.setDestinationTel(rs.getString("destination_tel"));
 		order.setDeliveryTime(rs.getTimestamp("delivery_time"));
 		order.setPaymentMethod(rs.getInt("payment_method"));
+		order.setOrderNumber(rs.getString("order_number"));
 		return order;
 	};
+	
+	public List<Order> newFindByUserId(long userId, boolean isJoin) {
+		StringBuilder sql = new StringBuilder();
+		SqlParameterSource param;
+		List<Order> orderList = null;
+		if (isJoin) {
+			sql.append("SELECT o1.id o1_id, o1.user_id o1_user_id, o1.status o1_status, o1.total_price o1_total_price, o1.order_date o1_order_date, o1.destination_name o1_destination_name, o1.destination_email o1_destination_email, o1.destination_zipcode o1_destination_zipcode, o1.destination_address o1_destination_address, o1.destination_tel o1_destination_tel, o1.delivery_time o1_delivery_time, o1.payment_method o1_payment_method, o1.order_number o1_order_number, ");
+			sql.append("o2.id o2_id, o2.item_id o2_item_id, o2.order_id o2_order_id, o2.quantity o2_quantity, o2.size o2_size,");
+			sql.append("o3.id o3_id, o3.topping_id o3_topping_id, o3.order_item_id o3_order_item_id,");
+			sql.append("i.id i_id, i.name i_name, i.description i_description, i.price_m i_price_m, i.price_l i_price_l, i.image_path i_image_path, i.deleted i_deleted,");
+			sql.append("t.id t_id, t.name t_name, t.price_m t_price_m, t.price_l t_price_l ");
+			sql.append("FROM orders o1 FULL OUTER JOIN order_items o2 ON o1.id=o2.order_id ");
+			sql.append("FULL OUTER JOIN order_toppings o3 ON o2.id=o3.order_item_id ");
+			sql.append("FULL OUTER JOIN items i ON o2.item_id=i.id ");
+			sql.append("FULL OUTER JOIN toppings t ON o3.topping_id=t.id ");
+			sql.append("WHERE o1.id=:userId");
+			param = new MapSqlParameterSource().addValue("userId", userId);
+			orderList = template.query(sql.toString(), param, ORDER_RESULT_SET_EXTRACTOR2);
+		} else {
+			sql.append("SELECT id, user_id, status, total_price, order_date, destination_name, destination_email, destination_zipcode, destination_address, destination_tel, delivery_time, payment_method, order_number ");
+			sql.append("FROM orders WHERE id=:userId;");
+			param = new MapSqlParameterSource().addValue("userId", userId);
+			orderList = template.query(sql.toString(), param, ORDER_ROW_MAPPER);
+		}
+		return orderList;
+	}
 
 
 	/**
@@ -155,7 +266,7 @@ public class OrderRepository {
 	 */
 	public Order findByUserIdAndStatus(Integer userId, Integer status) {
 		StringBuilder sql = new StringBuilder();
-		sql.append("SELECT id, user_id, status, total_price, order_date, destination_name, destination_email, destination_zipcode, destination_address, destination_tel, delivery_time, payment_method ");
+		sql.append("SELECT id, user_id, status, total_price, order_date, destination_name, destination_email, destination_zipcode, destination_address, destination_tel, delivery_time, payment_method, order_number ");
 		sql.append("FROM orders WHERE user_id=:userId AND status=:status");
 		SqlParameterSource param = new MapSqlParameterSource().addValue("userId", userId).addValue("status", status);
 		List<Order> orderList = template.query(sql.toString(), param, ORDER_ROW_MAPPER);
@@ -175,7 +286,7 @@ public class OrderRepository {
 	 */
 	public Order findByOrderId(Integer id) {
 		StringBuilder sql = new StringBuilder();
-		sql.append("SELECT o1.id o1_id, o1.user_id o1_user_id, o1.status o1_status, o1.total_price o1_total_price, o1.order_date o1_order_date, o1.destination_name o1_destination_name, o1.destination_email o1_destination_email, o1.destination_zipcode o1_destination_zipcode, o1.destination_address o1_destination_address, o1.destination_tel o1_destination_tel, o1.delivery_time o1_delivery_time, o1.payment_method o1_payment_method,");
+		sql.append("SELECT o1.id o1_id, o1.user_id o1_user_id, o1.status o1_status, o1.total_price o1_total_price, o1.order_date o1_order_date, o1.destination_name o1_destination_name, o1.destination_email o1_destination_email, o1.destination_zipcode o1_destination_zipcode, o1.destination_address o1_destination_address, o1.destination_tel o1_destination_tel, o1.delivery_time o1_delivery_time, o1.payment_method o1_payment_method, o1.order_number o1_order_number, ");
 		sql.append("o2.id o2_id, o2.item_id o2_item_id, o2.order_id o2_order_id, o2.quantity o2_quantity, o2.size o2_size,");
 		sql.append("o3.id o3_id, o3.topping_id o3_topping_id, o3.order_item_id o3_order_item_id,");
 		sql.append("i.id i_id, i.name i_name, i.description i_description, i.price_m i_price_m, i.price_l i_price_l, i.image_path i_image_path, i.deleted i_deleted,");
@@ -199,7 +310,7 @@ public class OrderRepository {
 	 */
 	public Order findByUserId(Integer userId) {
 		StringBuilder sql = new StringBuilder();
-		sql.append("SELECT o1.id o1_id, o1.user_id o1_user_id, o1.status o1_status, o1.total_price o1_total_price, o1.order_date o1_order_date, o1.destination_name o1_destination_name, o1.destination_email o1_destination_email, o1.destination_zipcode o1_destination_zipcode, o1.destination_address o1_destination_address, o1.destination_tel o1_destination_tel, o1.delivery_time o1_delivery_time, o1.payment_method o1_payment_method,");
+		sql.append("SELECT o1.id o1_id, o1.user_id o1_user_id, o1.status o1_status, o1.total_price o1_total_price, o1.order_date o1_order_date, o1.destination_name o1_destination_name, o1.destination_email o1_destination_email, o1.destination_zipcode o1_destination_zipcode, o1.destination_address o1_destination_address, o1.destination_tel o1_destination_tel, o1.delivery_time o1_delivery_time, o1.payment_method o1_payment_method, o1.order_number o1_order_number, ");
 		sql.append("o2.id o2_id, o2.item_id o2_item_id, o2.order_id o2_order_id, o2.quantity o2_quantity, o2.size o2_size,");
 		sql.append("o3.id o3_id, o3.topping_id o3_topping_id, o3.order_item_id o3_order_item_id,");
 		sql.append("i.id i_id, i.name i_name, i.description i_description, i.price_m i_price_m, i.price_l i_price_l, i.image_path i_image_path, i.deleted i_deleted,");
@@ -223,7 +334,7 @@ public class OrderRepository {
 	 */
 	public Order findByUserId2(Integer userId) {
 		StringBuilder sql = new StringBuilder();
-		sql.append("SELECT o1.id o1_id, o1.user_id o1_user_id, o1.status o1_status, o1.total_price o1_total_price, o1.order_date o1_order_date, o1.destination_name o1_destination_name, o1.destination_email o1_destination_email, o1.destination_zipcode o1_destination_zipcode, o1.destination_address o1_destination_address, o1.destination_tel o1_destination_tel, o1.delivery_time o1_delivery_time, o1.payment_method o1_payment_method,");
+		sql.append("SELECT o1.id o1_id, o1.user_id o1_user_id, o1.status o1_status, o1.total_price o1_total_price, o1.order_date o1_order_date, o1.destination_name o1_destination_name, o1.destination_email o1_destination_email, o1.destination_zipcode o1_destination_zipcode, o1.destination_address o1_destination_address, o1.destination_tel o1_destination_tel, o1.delivery_time o1_delivery_time, o1.payment_method o1_payment_method, o1.order_number o1_order_number, ");
 		sql.append("o2.id o2_id, o2.item_id o2_item_id, o2.order_id o2_order_id, o2.quantity o2_quantity, o2.size o2_size,");
 		sql.append("o3.id o3_id, o3.topping_id o3_topping_id, o3.order_item_id o3_order_item_id,");
 		sql.append("i.id i_id, i.name i_name, i.description i_description, i.price_m i_price_m, i.price_l i_price_l, i.image_path i_image_path, i.deleted i_deleted,");
@@ -294,7 +405,7 @@ public class OrderRepository {
 	 */
 	public String getOrderNumber() {
 		StringBuilder sql = new StringBuilder();
-		sql.append("SELECT to_char(nextval('customer_code_seq'), 'FM00000');");
+		sql.append("SELECT to_char(nextval('order_numbers'), 'FM00000');");
 		SqlParameterSource param = new MapSqlParameterSource();
 		return template.queryForObject(sql.toString(), param, String.class);
 	}

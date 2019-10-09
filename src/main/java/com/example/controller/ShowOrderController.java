@@ -1,6 +1,12 @@
 package com.example.controller;
 
+import java.text.ParseException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -124,12 +132,35 @@ public class ShowOrderController {
 	 * @param form  リクエストパラメータ
 	 * @param model リクエストスコープ
 	 * @return      注文完了画面
+	 * @throws ParseException 
 	 */
 	@RequestMapping("/toOrder")
 	public String toOrder(
-			OrderItemForm form,
+			@Validated OrderItemForm form,
+			BindingResult result,
 			Model model,
-			@AuthenticationPrincipal LoginUser loginUser) {
+			@AuthenticationPrincipal LoginUser loginUser) throws ParseException {
+
+		System.out.println("form:"+form);
+		if ("".equals(form.getDeliveryDay())) {
+			return index(form.getOrderId(), loginUser, model);
+		}
+		
+		Date date = new Date();
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		date = new GregorianCalendar(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE)).getTime();
+		LocalDateTime preDate = LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
+
+		if (!form.toLocalDateTime().isAfter(preDate)) {
+			if (!form.toLocalDateTime().equals(preDate)) {
+				result.rejectValue("deliveryDay", "", "過去の日時が指定されています");
+			}
+		}
+
+		if (result.hasErrors()) {
+			return index(form.getOrderId(), loginUser, model);
+		}
 
 		//クレジットカード決済処理
 		if ("2".equals(form.getPaymentMethod())) {

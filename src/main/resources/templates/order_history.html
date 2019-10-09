@@ -6,13 +6,36 @@
 
 <link th:href="@{/css/bootstrap.css}" rel="stylesheet">
 <link th:href="@{/css/piza.css}" rel="stylesheet">
-
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script>
+function csv(orderId) {
+	$.ajax({
+		type : "get",
+		url : "/test",
+		data : {
+			orderId : orderId
+		},
+		dataType: "json",
+		async : true,
+		success : function(data) {
+			alert("DLに成功しました");
+		},
+		error : function(XMLHttpRequest, textStatus, errorThrown) {
+			alert("DLに失敗しました");
+		}
+	});
+}
+</script>
 </head>
 <body>
 
 	<div class="container">
-
 		<span th:include="fragment::hedder2"></span>
+		<form method="get">
+			<button type="button" th:onclick="'csv(' + ${order.id} + ')'">
+				CSVダウンロード
+			</button>
+		</form>
 
 		<!-- table -->
 		<div class="row">
@@ -50,7 +73,6 @@
 	</div>
 	</div>
 	</div>
-	
 
 </body>
 </html>

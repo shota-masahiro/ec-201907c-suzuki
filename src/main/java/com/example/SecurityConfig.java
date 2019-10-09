@@ -63,7 +63,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		    		"/executeShoppingCart/view",
 		    		"/review",
 		    		"/ranking",
-		    		"/test")
+		    		"/test",
+		    		"/repo")
 		    .permitAll()
 		    .anyRequest().authenticated(); //上記以外のパスは認証が必要
 		

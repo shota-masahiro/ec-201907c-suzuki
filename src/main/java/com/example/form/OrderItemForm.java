@@ -1,8 +1,13 @@
 package com.example.form;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+
+import javax.validation.constraints.NotBlank;
 
 /**
  * 注文情報を受け取るフォーム.
@@ -43,6 +48,7 @@ public class OrderItemForm {
 	private String totalPrice;
 
 	/** 配達日 */
+	@NotBlank(message = "配達日を入力してください")
 	private String deliveryDay;
 
 	/** 配達時間 */
@@ -109,7 +115,12 @@ public class OrderItemForm {
 		this.cardCvv = cardCvv;
 	}
 
-
+	public LocalDateTime toLocalDateTime() throws ParseException {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date formatDate = sdf.parse(this.deliveryDay);
+		return LocalDateTime.ofInstant(formatDate.toInstant(), ZoneId.systemDefault());
+	}
+	
 	public java.sql.Timestamp getTimestampDeliveryDayTime() {
 		String DayTime = deliveryDay + "-" + deliveryTime;
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH");
