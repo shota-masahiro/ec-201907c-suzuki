@@ -182,10 +182,8 @@ public class ShowOrderController {
 		User user = registerUserService.load(order.getUserId());
 
 		//ポイント使用のエラーチェック
-		if (form.getUsePoint() != "") {
-			if (form.getIntegerUsePoint() > user.getPoint()) {
-				return index(form.getOrderId(), loginUser, model);
-			}
+		if (form.getUsePoint() == "") {
+			return index(form.getOrderId(), loginUser, model);
 		}
 
 		//付与するポイントの計算処理
@@ -193,6 +191,10 @@ public class ShowOrderController {
 
 		//ポイントを使用したときの処理
 		if (form.isCheckPoint()) {
+			//ポイント使用のエラーチェック
+			if (form.getIntegerUsePoint() > user.getPoint()) {
+				return index(form.getOrderId(), loginUser, model);
+			}
 			//ポイント使用はユーザのポイントを減算する
 			user.setPoint(user.getPoint() - form.getIntegerUsePoint());
 			form.setTotalPrice(String.valueOf(form.getIntTotalPrice() - form.getIntegerUsePoint()));

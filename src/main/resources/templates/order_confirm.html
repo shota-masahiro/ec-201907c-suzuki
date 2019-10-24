@@ -14,10 +14,11 @@
 <!-- 郵便番号検索のjsファイル -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script th:src="@{/js/order_confirm_add.js}"></script>
+<script th:src="@{/js/point_calc_money.js}"></script>
 </head>
 <body>
 	<div class="container">
-		
+
 		<span th:include="fragment::hedder2"></span>
 
 		<!-- table -->
@@ -96,8 +97,10 @@
 		<div class="row">
 			<div class="col-xs-offset-2 col-xs-8">
 				<div class="form-group text-center">
-					<span id="total-price">消費税:</span><span id="total-price" th:text="${#numbers.formatInteger(order.getTax(), 1, 'COMMA') + '円'}">消費税：8,000円</span><br>
-					<span id="total-price">ご注文金額合計：</span><span id="total-price" th:text="${#numbers.formatInteger(order.getCalcTotalPrice(), 1, 'COMMA') + '円 (税込)'}">38,000円 (税込)</span>
+					<span id="total-price">消費税:</span><span id="total-price-calc" th:text="${#numbers.formatInteger(order.getTax(), 1, 'COMMA') + '円'}">消費税：8,000円</span><br>
+					<span id="total-price">ご注文金額合計：</span><span id="total-price-money" th:text="${#numbers.formatInteger(order.getCalcTotalPrice(), 1, 'COMMA') + '円 (税込)'}">38,000円 (税込)</span>
+					<input type="hidden" id="total-calc-price" th:value="${order.getTax()}">
+					<input type="hidden" id="total-money-price" th:value="${order.getCalcTotalPrice()}">
 				</div>
 			</div>
 		</div>
@@ -198,8 +201,9 @@
 			<div class="row">
 				<div class="table-responsive col-lg-offset-3 col-lg-6 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
 					<h3 class="text-center">
-						ポイントの使用:使用可能ポイント&nbsp;<span th:text="${user.point}"></span>pt
+						ポイントの使用:使用可能ポイント&nbsp;<span th:text="${user.point}" id="use"></span>
 					</h3>
+					<input type="hidden" id="uses" th:value="${user.point}">
 					<table class="table table-striped">
 						<tbody>
 							<tr>
@@ -213,7 +217,7 @@
 									<div class="row">
 										<div class="col-sm-12">
 											<label class="radio-inline">
-												<input type="radio" name="checkPoint" value="true">
+												<input type="radio" name="checkPoint" value="true" class="checkPoint">
 											</label>
 										</div>
 									</div>
@@ -223,7 +227,7 @@
 									<div class="row">
 										<div class="col-sm-12">
 											<label class="radio-inline">
-												<input type="text" name="usePoint">
+												<input type="text" id="usePoint" name="usePoint" disabled/>
 											</label>
 										</div>
 									</div>
@@ -242,7 +246,7 @@
 									<div class="row">
 										<div class="col-sm-12">
 											<label class="radio-inline">
-												<input type="radio" name="checkPoint" value="false" checked="checked">
+												<input type="radio" name="checkPoint" value="false" class="checkPoint" checked="checked" id="check">
 											</label>
 										</div>
 									</div>
@@ -270,7 +274,7 @@
 									<div class="row">
 										<div class="col-sm-12">
 											<label class="radio-inline">
-												<input type="radio" name="paymentMethod" th:value="${payment.key}" th:checked="${payment.key == 1}" onchange="sample(this);" th:text="${payment.value}">
+												<input type="radio" id="moneyPay" name="paymentMethod" th:value="${payment.key}" th:checked="${payment.key == 1}" th:text="${payment.value}">
 											</label>
 										</div>
 									</div>
@@ -280,14 +284,13 @@
 					</table>
 				</div>
 			</div>
-			
+
 			<!-- クレジットカード決済 -->
-			<div class="row" id="credit">
+			<div class="row" id="credit" style="display:none;">
 				<div class="table-responsive col-lg-offset-3 col-lg-6 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
 					<h3 class="text-center">クレジットカード決済</h3>
 					<table class="table table-striped">
 						<tbody>
-
 							<tr>
 								<td>
 									<div>

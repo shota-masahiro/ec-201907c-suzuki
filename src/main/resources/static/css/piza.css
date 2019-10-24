@@ -17,4 +17,11 @@ span.price {
 span#total-price {
 	font-size: 35px;
 }
+span#total-price-money {
+	font-size: 35px;
+}
+span#total-price-calc {
+	font-size: 35px;
+}
+
 

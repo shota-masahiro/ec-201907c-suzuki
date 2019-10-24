@@ -10,11 +10,11 @@
 	<hr>
 	<h2 class="text-center">注文内容確認</h2><br>
 	<span>★商品一覧</span><br>
-	<span th:inline="text" th:each="name:${name_list}">
+	<span th:inline="text" th:each="name:${nameList}">
 		<span th:inline="text">[[${name}]]</span><br>
 	</span><br>
-	★お支払い金額:<span th:inline="text">[[${#numbers.formatInteger(total_price, 1, 'COMMA')}]]円</span><br>
-	★お支払い方法:<span th:inline="text">[[${paymentMethod}]]</span><br>
-	★配達日時:<span th:inline="text">[[${#dates.format(delivery_time, 'yyyy年MM月dd日HH時')}]]</span><br>
+	★お支払い金額:<span th:inline="text">[[${#numbers.formatInteger(totalPrice, 1, 'COMMA')}]]円</span><br>
+<!--★お支払い方法:<span th:inline="text">[[${paymentMethod}]]</span><br>
+	★配達日時:<span th:inline="text">[[${#dates.format(deliveryTime, 'yyyy/MM/dd HH:mm')}]]</span><br> -->
 	<hr>
 </body>

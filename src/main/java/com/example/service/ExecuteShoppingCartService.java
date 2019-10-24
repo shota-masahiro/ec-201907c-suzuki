@@ -2,10 +2,15 @@ package com.example.service;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -185,5 +190,19 @@ public class ExecuteShoppingCartService {
 	public void update2(Integer orderId, Integer userId) {
 		orderRepository.update2(orderId, userId);
 	}
-
+	
+	
+	public Page<Order> showListPaging(int page, int size, List<Order> orderList) {
+		page--;
+		int startItemCount = page * size;
+		List<Order> list;
+		if (orderList.size() < startItemCount) {
+			list = Collections.emptyList();
+		} else {
+			int toIndex = Math.min(startItemCount+ size, orderList.size());
+			list = orderList.subList(startItemCount, toIndex);
+		}
+		Page<Order> orderPage = new PageImpl<Order>(list, PageRequest.of(page, size), orderList.size());
+		return orderPage;
+	}
 }

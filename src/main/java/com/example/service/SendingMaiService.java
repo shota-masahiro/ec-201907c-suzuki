@@ -1,6 +1,8 @@
 package com.example.service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,7 @@ public class SendingMaiService {
 	 * 
 	 * @param form リクエストパラメータ
 	 */
+	@SuppressWarnings("unlikely-arg-type")
 	@Async
 	public void run(OrderItemForm form) {
 
@@ -54,10 +57,10 @@ public class SendingMaiService {
 		for (Item item : itemList) {
 			nameList.add(item.getName());
 		}
-		context.setVariable("name_list", nameList);
+		context.setVariable("nameList", nameList);
 
 		//金額を格納
-		context.setVariable("total_price", order.getTotalPrice());
+		context.setVariable("totalPrice", order.getCalcTotalPrice());
 
 		//支払方法を格納
 		if (order.getPaymentMethod().equals(1)) {
@@ -67,7 +70,7 @@ public class SendingMaiService {
 		}
 
 		//配達日を格納
-		context.setVariable("delivery_time", order.getDeliveryTime());
+		context.setVariable("deliveryTime", order.getDeliveryTime());
 
 		//メール送信処理
 		sendMailService.sendMail(context, form.getDestinationEmail());

@@ -38,7 +38,6 @@ public class ExecuteShoppingCartController {
 		return new ExecuteShoppingCartForm();
 	}
 
-
 	/**
 	 * ショッピングカート画面を出力します.
 	 * 
